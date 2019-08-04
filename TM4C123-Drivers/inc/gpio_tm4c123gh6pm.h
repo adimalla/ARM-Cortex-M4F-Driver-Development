@@ -131,7 +131,7 @@
 #define UART6RX_PD4              PCTL_AF1  /*!< UART 6 Rx on PD4  */
 #define UART6TX_PD5              PCTL_AF1  /*!< UART 6 Tx on PD5  */
 #define UART7RX_PE0              PCTL_AF1  /*!< UART 7 Rx on PE0  */
-#define UART7TX_P41              PCTL_AF1  /*!< UART 7 Tx on PE1  */
+#define UART7TX_PE1              PCTL_AF1  /*!< UART 7 Tx on PE1  */
 
 
 /*
@@ -149,10 +149,10 @@
 #define SSI1FSS_PF3              PCTL_AF2  /*!< SSI 1 Fss on PF3 */
 #define SSI1RX_PF0               PCTL_AF2  /*!< SSI 1 Rs on PF0  */
 #define SSI1TX_PF1               PCTL_AF2  /*!< SSI 1 Tx on PF1  */
-#define SSI2CLK_PB4              PCTL_AF2  /*!< SSI 2 Clk on PB0 */
-#define SSI2FSS_PB5              PCTL_AF2  /*!< SSI 2 Fss on PB1 */
-#define SSI2RX_PB6               PCTL_AF2  /*!< SSI 2 Rs on PB2  */
-#define SSI2TX_PB7               PCTL_AF2  /*!< SSI 2 Tx on PB3  */
+#define SSI2CLK_PB4              PCTL_AF2  /*!< SSI 2 Clk on PB4 */
+#define SSI2FSS_PB5              PCTL_AF2  /*!< SSI 2 Fss on PB5 */
+#define SSI2RX_PB6               PCTL_AF2  /*!< SSI 2 Rs on PB6  */
+#define SSI2TX_PB7               PCTL_AF2  /*!< SSI 2 Tx on PB7  */
 #define SSI3CLK_PD0              PCTL_AF1  /*!< SSI 3 Clk on PD0 */
 #define SSI3FSS_PD1              PCTL_AF1  /*!< SSI 3 Fss on PD1 */
 #define SSI3RX_PD2               PCTL_AF1  /*!< SSI 3 Rs on PD2  */
