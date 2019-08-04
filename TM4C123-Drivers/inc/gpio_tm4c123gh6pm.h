@@ -195,27 +195,33 @@
 /******************************************************************************/
 
 
+/*
+ * @brief GPIO Configuration Structure
+ */
 /*TODO Add slew rate control */
 typedef struct
 {
-    uint8_t PINNUMBER;      /*!< GPIO Pin Number                                      */
-    uint8_t DIRECTION;      /*!< GPIO Pin Direction                                   */
-    uint8_t ALTERNATEFUNC;  /*!< GPIO Pin Alternate Function                          */
-    uint8_t DRIVE;          /*!< GPIO Pin Drive Select, GPIODR2R, GPIODR4R, GPIODR8R  */
-    uint8_t OPENDRAIN;      /*!< GPIO Pin Open Drain Select                           */
-    uint8_t PULLUPDOWN;     /*!< GPIO Pin Pull-Up and Pull-Down Select                */
-    uint8_t PINMODE;        /*!< GPIO Digital or Analog Register Mode Select          */
-    uint8_t PCTLVAL;        /*!< GPIO Port Control Register Value                     */
+    uint8_t pin_number;          /*!< GPIO Pin Number                                      */
+    uint8_t direction;           /*!< GPIO Pin Direction                                   */
+    uint8_t alternate_function;  /*!< GPIO Pin Alternate Function                          */
+    uint8_t drive;               /*!< GPIO Pin Drive Select, GPIODR2R, GPIODR4R, GPIODR8R  */
+    uint8_t opendrain;           /*!< GPIO Pin Open Drain Select                           */
+    uint8_t pullupdown;          /*!< GPIO Pin Pull-Up and Pull-Down Select                */
+    uint8_t pin_mode;            /*!< GPIO Digital or Analog Register Mode Select          */
+    uint8_t pctl_value;          /*!< GPIO Port Control Register Value                     */
 
-}GPIO_PIN_CONFIG_T;
+} gpio_config_t;
 
 
+/*
+ * @brief GPIO Handle Structure
+ */
 typedef struct
 {
-    GPIO_PORT_T        *pGPIOx;         /*!< Holds GPIO Base Address*/
-    GPIO_PIN_CONFIG_T  gpioPinConfig;   /*!< */
+    GPIO_PORT_T    *p_gpio_x;      /*!< Pointer to GPIO Peripheral Address                         */
+    gpio_config_t  gpioPinConfig;  /*!< Variable Declaration GPIO pin configuration data structure */
 
-}GPIO_HANDLE_T;
+} gpio_handle_t;
 
 
 
@@ -230,59 +236,59 @@ typedef struct
 
 /*
  * @brief   Intializes GPIO pin.
- * @param   *pGPIOHandle : pointer to the GPIO Handle structure (GPIO_HANDLE_T).
+ * @param   *pGPIOHandle : pointer to the GPIO Handle structure (gpio_handle_t).
  * @retval  None.
  */
-void GPIO_Init(GPIO_HANDLE_T *pGPIOHandle);
+void GPIO_Init(gpio_handle_t *pGPIOHandle);
 
 
 
 /*
  * @brief   Deinitialize GPIO pin.
- * @param   *pGPIOHandle : pointer to the GPIO Handle structure (GPIO_HANDLE_T).
+ * @param   *pGPIOHandle : pointer to the GPIO Handle structure (gpio_handle_t).
  * @retval  None.
  */
-void GPIO_DeInit(GPIO_HANDLE_T *pGPIOHandle);
+void GPIO_DeInit(gpio_handle_t *pGPIOHandle);
 
 
 
 /*
  * @brief   Read from GPIO pin (Blocking function)
- * @param   *pGPIOx   : pointer to the GPIO port structure (GPIO_PORT_T).
- * @param   pinNumber : GPIO Pin Number.
+ * @param   *p_gpio_x : pointer to the GPIO port structure (GPIO_PORT_T).
+ * @param   pin       : GPIO Pin Number.
  * @retval  uint8_t   : Return value from the pin.
  */
-uint8_t GPIO_ReadFromPin(GPIO_PORT_T *pGPIOx, uint8_t pinNumber);
+uint8_t GPIO_ReadFromPin(GPIO_PORT_T *p_gpio_x, uint8_t pin);
 
 
 
 /*
  * @brief   Write to GPIO pin
- * @param   *pGPIOx   : pointer to the GPIO port structure (GPIO_PORT_T).
+ * @param   *p_gpio_x   : pointer to the GPIO port structure (GPIO_PORT_T).
  * @param   pinNumber : GPIO Pin Number
  * @bool    value     : Value to be written, 1 or 0.
  * @retval  None.
  */
-void GPIO_WriteToPin(GPIO_PORT_T *pGPIOx, uint8_t pinNumber, bool value);
+void GPIO_WriteToPin(GPIO_PORT_T *p_gpio_x, uint8_t pinNumber, bool value);
 
 
 
 /*
  * @brief   Read from GPIO port (Blocking function)
- * @param   *pGPIOx  : pointer to the GPIO port structure (GPIO_PORT_T).
+ * @param   *p_gpio_x  : pointer to the GPIO port structure (GPIO_PORT_T).
  * @retval  uint8_t  : Data from the port
  */
-uint8_t GPIO_ReadFromPort(GPIO_PORT_T *pGPIOx);
+uint8_t GPIO_ReadFromPort(GPIO_PORT_T *p_gpio_x);
 
 
 
 /*
  * @brief   Write to GPIO port
- * @param   *pGPIOx  : pointer to the GPIO port structure (GPIO_PORT_T).
+ * @param   *p_gpio_x  : pointer to the GPIO port structure (GPIO_PORT_T).
  * @param   value  : Data to be written to the port
  * @retval  None.
  */
-void GPIO_WriteToPort(GPIO_PORT_T *pGPIOx, uint8_t value);
+void GPIO_WriteToPort(GPIO_PORT_T *p_gpio_x, uint8_t value);
 
 
 
