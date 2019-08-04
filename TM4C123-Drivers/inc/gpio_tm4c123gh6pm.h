@@ -56,55 +56,55 @@
 /*
  * @brief GPIO Pin Initialization Macros
  */
-#define GPIO_DIR_INPUT           ((uint32_t)0x00UL)  /*!< Enable GPIO Direction register (GPIODIR) as Input                    */
-#define GPIO_DIR_OUTPUT          ((uint32_t)0x01UL)  /*!< Enable GPIO Direction register (GPIODIR) as Output                   */
-#define GPIO_IS_EDGE             ((uint32_t)0x00UL)  /*!< Enable GPIO Interrupt Sense Register (GPIOIS) to be Edge Sensitive   */
-#define GPIO_IS_LEVEL            ((uint32_t)0x01UL)  /*!< Enable GPIO Interrupt Sense Register (GPIOIS) to be Level Sensitive  */
-#define GPIO_BE_DISABLE          ((uint32_t)0x00UL)  /*!< Interrupt generation is controlled by GPIO Interrupt Event register  */
-#define GPIO_BE_ENABLE           ((uint32_t)0x01UL)  /*!< Enable GPIO Interrupt Both Edges (GPIOIBE) to be Both Edge Sensitive */
-#define GPIO_AFSEL_DISABLE       ((uint32_t)0x00UL)  /*!< Disable GPIO Alternate Function Select register (GPIOAFSEL)          */
-#define GPIO_AFSEL_ENABLE        ((uint32_t)0x01UL)  /*!< Enable GPIO Alternate Function Select register (GPIOAFSEL)           */
-#define GPIO_DR2R                ((uint32_t)0x00UL)  /*!< Enable GPIO Drive Select (GPIODR2R) to 2mA Drive                     */
-#define GPIO_DR4R                ((uint32_t)0x01UL)  /*!< Enable GPIO Drive Select (GPIODR4R) to 4mA Drive                     */
-#define GPIO_DR8R                ((uint32_t)0x02UL)  /*!< Enable GPIO Drive Select (GPIODR8R) to 8mA Drive                     */
-#define GPIO_ODDR_DISABLE        ((uint32_t)0x00UL)  /*!< Disable GPIO Open Drain Select Register (GPIOODR)                    */
-#define GPIO_ODDR_ENABLE         ((uint32_t)0x01UL)  /*!< Enable GPIO Open Drain Select Register (GPIOODR)                     */
-#define GPIO_NOPUPD              ((uint32_t)0x00UL)  /*!< No Pull-Up ad Pull-Down is selected                                  */
-#define GPIO_PUR_ENABLE          ((uint32_t)0x01UL)  /*!< Enable GPIO Pull-Up Select Register (GPIOPUR)                        */
-#define GPIO_PDR_ENABLE          ((uint32_t)0x02UL)  /*!< Enable GPIO Pull-Down Select Register (GPIOPUR)                      */
-#define GPIO_DEN_DISABLE         ((uint32_t)0x00UL)  /*!< Disable GPIO Digital Register (GPIOAMSEL)                            */
-#define GPIO_DEN_ENABLE          ((uint32_t)0x01UL)  /*!< Enable GPIO Digital Register (GPIODEN)                               */
-#define GPIO_AMSEL_DISABLE       ((uint32_t)0x00UL)  /*!< Disable GPIO Analog Mode Select Register (GPIOAMSEL)                 */
-#define GPIO_AMSEL_ENABLE        ((uint32_t)0x02UL)  /*!< Enable GPIO Analog Mode Select Register (GPIOAMSEL)                  */
+#define GPIO_DIR_INPUT           ((uint8_t)0x00UL)  /*!< Enable GPIO Direction register (GPIODIR) as Input                    */
+#define GPIO_DIR_OUTPUT          ((uint8_t)0x01UL)  /*!< Enable GPIO Direction register (GPIODIR) as Output                   */
+#define GPIO_IS_EDGE             ((uint8_t)0x00UL)  /*!< Enable GPIO Interrupt Sense Register (GPIOIS) to be Edge Sensitive   */
+#define GPIO_IS_LEVEL            ((uint8_t)0x01UL)  /*!< Enable GPIO Interrupt Sense Register (GPIOIS) to be Level Sensitive  */
+#define GPIO_BE_DISABLE          ((uint8_t)0x00UL)  /*!< Interrupt generation is controlled by GPIO Interrupt Event register  */
+#define GPIO_BE_ENABLE           ((uint8_t)0x01UL)  /*!< Enable GPIO Interrupt Both Edges (GPIOIBE) to be Both Edge Sensitive */
+#define GPIO_AFSEL_DISABLE       ((uint8_t)0x00UL)  /*!< Disable GPIO Alternate Function Select register (GPIOAFSEL)          */
+#define GPIO_AFSEL_ENABLE        ((uint8_t)0x01UL)  /*!< Enable GPIO Alternate Function Select register (GPIOAFSEL)           */
+#define GPIO_DR2R                ((uint8_t)0x00UL)  /*!< Enable GPIO Drive Select (GPIODR2R) to 2mA Drive                     */
+#define GPIO_DR4R                ((uint8_t)0x01UL)  /*!< Enable GPIO Drive Select (GPIODR4R) to 4mA Drive                     */
+#define GPIO_DR8R                ((uint8_t)0x02UL)  /*!< Enable GPIO Drive Select (GPIODR8R) to 8mA Drive                     */
+#define GPIO_ODDR_DISABLE        ((uint8_t)0x00UL)  /*!< Disable GPIO Open Drain Select Register (GPIOODR)                    */
+#define GPIO_ODDR_ENABLE         ((uint8_t)0x01UL)  /*!< Enable GPIO Open Drain Select Register (GPIOODR)                     */
+#define GPIO_NOPUPD              ((uint8_t)0x00UL)  /*!< No Pull-Up ad Pull-Down is selected                                  */
+#define GPIO_PUR_ENABLE          ((uint8_t)0x01UL)  /*!< Enable GPIO Pull-Up Select Register (GPIOPUR)                        */
+#define GPIO_PDR_ENABLE          ((uint8_t)0x02UL)  /*!< Enable GPIO Pull-Down Select Register (GPIOPUR)                      */
+#define GPIO_DEN_DISABLE         ((uint8_t)0x00UL)  /*!< Disable GPIO Digital Register (GPIOAMSEL)                            */
+#define GPIO_DEN_ENABLE          ((uint8_t)0x01UL)  /*!< Enable GPIO Digital Register (GPIODEN)                               */
+#define GPIO_AMSEL_DISABLE       ((uint8_t)0x00UL)  /*!< Disable GPIO Analog Mode Select Register (GPIOAMSEL)                 */
+#define GPIO_AMSEL_ENABLE        ((uint8_t)0x02UL)  /*!< Enable GPIO Analog Mode Select Register (GPIOAMSEL)                  */
 
 
 /*
  * @brief GPIO Slew Rate Control Select (GPIOSLR) Register
  * @note  Slew rate control is only available when using the 8-mA drive strength option
  */
-#define GPIO_SLR_DISABLE         ((uint32_t)0x00UL)  /*!< */
-#define GPIO_SLR_ENABLE          ((uint32_t)0x01UL)  /*!< */
+#define GPIO_SLR_DISABLE         ((uint8_t)0x00UL)  /*!< */
+#define GPIO_SLR_ENABLE          ((uint8_t)0x01UL)  /*!< */
 
 
 /*
  * @brief GPIO Port Control (GPIOPCTL) Register Defines
  */
-#define PCTL_AF0                 ((uint32_t)0x00UL)  /*!< Bit Field Encoding of Alternate Function 0  */
-#define PCTL_AF1                 ((uint32_t)0x01UL)  /*!< Bit Field Encoding of Alternate Function 1  */
-#define PCTL_AF2                 ((uint32_t)0x02UL)  /*!< Bit Field Encoding of Alternate Function 2  */
-#define PCTL_AF3                 ((uint32_t)0x03UL)  /*!< Bit Field Encoding of Alternate Function 3  */
-#define PCTL_AF4                 ((uint32_t)0x04UL)  /*!< Bit Field Encoding of Alternate Function 4  */
-#define PCTL_AF5                 ((uint32_t)0x05UL)  /*!< Bit Field Encoding of Alternate Function 5  */
-#define PCTL_AF6                 ((uint32_t)0x06UL)  /*!< Bit Field Encoding of Alternate Function 6  */
-#define PCTL_AF7                 ((uint32_t)0x07UL)  /*!< Bit Field Encoding of Alternate Function 7  */
-#define PCTL_AF8                 ((uint32_t)0x08UL)  /*!< Bit Field Encoding of Alternate Function 8  */
-#define PCTL_AF9                 ((uint32_t)0x09UL)  /*!< Bit Field Encoding of Alternate Function 9  */
-#define PCTL_AF10                ((uint32_t)0x0AUL)  /*!< Bit Field Encoding of Alternate Function 10 */
-#define PCTL_AF11                ((uint32_t)0x0BUL)  /*!< Bit Field Encoding of Alternate Function 11 */
-#define PCTL_AF12                ((uint32_t)0x0CUL)  /*!< Bit Field Encoding of Alternate Function 12 */
-#define PCTL_AF13                ((uint32_t)0x0DUL)  /*!< Bit Field Encoding of Alternate Function 13 */
-#define PCTL_AF14                ((uint32_t)0x0EUL)  /*!< Bit Field Encoding of Alternate Function 14 */
-#define PCTL_AF15                ((uint32_t)0x0FUL)  /*!< Bit Field Encoding of Alternate Function 15 */
+#define PCTL_AF0                 ((uint8_t)0x00UL)  /*!< Bit Field Encoding of Alternate Function 0  */
+#define PCTL_AF1                 ((uint8_t)0x01UL)  /*!< Bit Field Encoding of Alternate Function 1  */
+#define PCTL_AF2                 ((uint8_t)0x02UL)  /*!< Bit Field Encoding of Alternate Function 2  */
+#define PCTL_AF3                 ((uint8_t)0x03UL)  /*!< Bit Field Encoding of Alternate Function 3  */
+#define PCTL_AF4                 ((uint8_t)0x04UL)  /*!< Bit Field Encoding of Alternate Function 4  */
+#define PCTL_AF5                 ((uint8_t)0x05UL)  /*!< Bit Field Encoding of Alternate Function 5  */
+#define PCTL_AF6                 ((uint8_t)0x06UL)  /*!< Bit Field Encoding of Alternate Function 6  */
+#define PCTL_AF7                 ((uint8_t)0x07UL)  /*!< Bit Field Encoding of Alternate Function 7  */
+#define PCTL_AF8                 ((uint8_t)0x08UL)  /*!< Bit Field Encoding of Alternate Function 8  */
+#define PCTL_AF9                 ((uint8_t)0x09UL)  /*!< Bit Field Encoding of Alternate Function 9  */
+#define PCTL_AF10                ((uint8_t)0x0AUL)  /*!< Bit Field Encoding of Alternate Function 10 */
+#define PCTL_AF11                ((uint8_t)0x0BUL)  /*!< Bit Field Encoding of Alternate Function 11 */
+#define PCTL_AF12                ((uint8_t)0x0CUL)  /*!< Bit Field Encoding of Alternate Function 12 */
+#define PCTL_AF13                ((uint8_t)0x0DUL)  /*!< Bit Field Encoding of Alternate Function 13 */
+#define PCTL_AF14                ((uint8_t)0x0EUL)  /*!< Bit Field Encoding of Alternate Function 14 */
+#define PCTL_AF15                ((uint8_t)0x0FUL)  /*!< Bit Field Encoding of Alternate Function 15 */
 
 
 /*
@@ -130,8 +130,8 @@
 #define UART5TX_P45              PCTL_AF1  /*!< UART 5 Tx on PE5  */
 #define UART6RX_PD4              PCTL_AF1  /*!< UART 6 Rx on PD4  */
 #define UART6TX_PD5              PCTL_AF1  /*!< UART 6 Tx on PD5  */
-#define UART7RX_PE0              PCTL_AF1  /*!< UART 5 Rx on PE0  */
-#define UART7TX_P41              PCTL_AF1  /*!< UART 5 Tx on PE1  */
+#define UART7RX_PE0              PCTL_AF1  /*!< UART 7 Rx on PE0  */
+#define UART7TX_P41              PCTL_AF1  /*!< UART 7 Tx on PE1  */
 
 
 /*
@@ -168,22 +168,22 @@
 
 
 /* @brief GPIO Interrupt Event (GPIOIEV) Register */
-#define GPIO_EV_FALLING_EDGE     ((uint32_t)0x00UL)  /*!< */
-#define GPIO_EV_RISING_EDGE      ((uint32_t)0x01UL)  /*!< */
+#define GPIO_EV_FALLING_EDGE     ((uint8_t)0x00UL)  /*!< */
+#define GPIO_EV_RISING_EDGE      ((uint8_t)0x01UL)  /*!< */
 
 /* @brief GPIO Interrupt Mask (GPIOIM) Register */
-#define GPIO_IM_DISABLE          ((uint32_t)0x00UL)  /*!< */
-#define GPIO_IM_ENABLE           ((uint32_t)0x01UL)  /*!< */
+#define GPIO_IM_DISABLE          ((uint8_t)0x00UL)  /*!< */
+#define GPIO_IM_ENABLE           ((uint8_t)0x01UL)  /*!< */
 
 /* @brief GPIO Interrupt Clear (GPIOICR) Register */
-#define GPIO_IC_CLEAR            ((uint32_t)0x01UL)  /*!< The corresponding interrupt is cleared by writing 1                        */
+#define GPIO_IC_CLEAR            ((uint8_t)0x01UL)  /*!< The corresponding interrupt is cleared by writing 1                        */
 
 
 /*
  * @brief GPIO Status / Read only registers
  */
-#define GPIO_RIS_FLAG            ((uint32_t)0x01UL)  /*!< GPIO Raw Interrupt Status (GPIORIS) Flag, Interrupt condition has occurred */
-#define GPIO_MIS_FLAG            ((uint32_t)0x01UL)  /*!< GPIO Masked Interrupt Status Flag, Interrupt condition has occurred        */
+#define GPIO_RIS_FLAG            ((uint8_t)0x01UL)  /*!< GPIO Raw Interrupt Status (GPIORIS) Flag, Interrupt condition has occurred */
+#define GPIO_MIS_FLAG            ((uint8_t)0x01UL)  /*!< GPIO Masked Interrupt Status Flag, Interrupt condition has occurred        */
 
 
 
@@ -222,7 +222,7 @@ typedef struct
 
 /******************************************************************************/
 /*                                                                            */
-/*                 Peripheral Driver Functions Prototypes                     */
+/*                 GPIO Peripheral Driver Functions Prototypes                */
 /*                                                                            */
 /******************************************************************************/
 
