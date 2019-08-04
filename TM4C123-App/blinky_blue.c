@@ -19,6 +19,11 @@
 #define IRQ 1
 #endif
 
+#define RED_LED     "PF1"
+#define BLUE_LED    "PF2"
+#define GREEN_LED   "PF3"
+#define PUSH_BUTTON "PF4"
+
 void initHW()
 {
 
@@ -100,11 +105,11 @@ int main(void)
     // The usual initHw
     initHW();
 
-    pinMode("PF2", OUTPUT);
+    pinMode(BLUE_LED, OUTPUT);
 
-    pinMode("PF1", OUTPUT, DIGITAL);
+    pinMode(RED_LED, OUTPUT, DIGITAL);
 
-    pinMode("PF4", INPUT, DIGITAL, PULLUP);
+    pinMode(PUSH_BUTTON, INPUT, DIGITAL, PULLUP);
 
 #if IRQ
     GPIOF->IM |= (1 << 4);
@@ -115,14 +120,14 @@ int main(void)
     {
 
 #if POLL
-        if(digitalRead("PF4") == 0)
+        if(digitalRead(PUSH_BUTTON) == 0)
         {
-            digitalWrite("PF1", HIGH);
-            digitalWrite("PF2", HIGH);
+            digitalWrite(RED_LED, HIGH);
+            digitalWrite(BLUE_LED, HIGH);
             waitMicrosecond(100000);
 
-            digitalWrite("PF1", LOW);
-            digitalWrite("PF2", LOW);
+            digitalWrite(RED_LED, LOW);
+            digitalWrite(BLUE_LED, LOW);
             waitMicrosecond(100000);
         }
 #endif
