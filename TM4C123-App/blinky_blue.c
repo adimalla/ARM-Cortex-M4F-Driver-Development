@@ -11,6 +11,8 @@
 #include "gpio_tm4c123gh6pm.h"
 #include "gpio.h"
 
+#include "ssi_tm4c123gh6pm.h"
+
 #define POLL 1
 
 #if POLL
@@ -95,15 +97,8 @@ void legacy_gpioInit()
 
 }
 
-
-/**
- * main.c
- */
-int main(void)
+void initGpio(void)
 {
-
-    // The usual initHw
-    initHW();
 
     pinMode(BLUE_LED, OUTPUT);
 
@@ -115,6 +110,34 @@ int main(void)
     GPIOF->IM |= (1 << 4);
     NVIC->EN0 |= (1 << 30);
 #endif
+
+}
+
+
+void initSpi(void)
+{
+    ssi_handle_t master;
+
+    master.p_ssi_x = SSI1;
+    master.ssi_periph.clock_port = GPIOD;
+    master.ssi_periph.clock_phase = SSI_CR0_SPH_FIRST;
+
+    ssi_init(&master);
+
+}
+
+/**
+ * main.c
+ */
+int main(void)
+{
+
+    // The usual initHw
+    initHW();
+
+    initGpio();
+
+    initSpi();
 
     while(1)
     {
