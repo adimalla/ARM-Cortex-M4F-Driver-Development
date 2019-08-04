@@ -43,12 +43,12 @@
 /******************************************************************************/
 
 
-/**
+/*
  * @brief   helper function to enable GPIO Peripheral Clock
  * @param   *p_gpio_x   : pointer to the GPIO port structure (GPIO_PORT_T).
  * @retval  None.
  */
-static void GPIO_clockEnable(GPIO_PORT_T *p_gpio_x)
+static void hf_gpio_clock_enable(GPIO_PORT_T *p_gpio_x)
 {
 
     SYSCTL_T *p_sys_clock = SYSCTL;  /*!< Pointer to System Control Peripheral Structure */
@@ -56,29 +56,36 @@ static void GPIO_clockEnable(GPIO_PORT_T *p_gpio_x)
     /* @brief Enable Clock for GPIO ports with re initialization check  */
 
     if(p_gpio_x == GPIOA && !(p_sys_clock->RCGCGPIO & 0x01UL))
+    {
         p_sys_clock->RCGCGPIO |= (0x01UL);
-
+    }
     else if(p_gpio_x == GPIOB && !( p_sys_clock->RCGCGPIO & (1 << 1) ))
+    {
         p_sys_clock->RCGCGPIO |= (1 << 1);
-
+    }
     else if(p_gpio_x == GPIOC && !( p_sys_clock->RCGCGPIO & (1 << 2) ))
+    {
         p_sys_clock->RCGCGPIO |= (1 << 2);
-
+    }
     else if(p_gpio_x == GPIOD && !( p_sys_clock->RCGCGPIO & (1 << 3) ))
+    {
         p_sys_clock->RCGCGPIO |= (1 << 3);
-
+    }
     else if(p_gpio_x == GPIOE && !( p_sys_clock->RCGCGPIO & (1 << 4) ))
+    {
         p_sys_clock->RCGCGPIO |= (1 << 4);
-
-    else if(p_gpio_x == GPIOF && !( p_sys_clock->RCGCGPIO & (1 << 5) ))
+    }
+    else if( (p_gpio_x == GPIOF) && !( p_sys_clock->RCGCGPIO & (1 << 5) ) )
+    {
         p_sys_clock->RCGCGPIO |= (1 << 5);
+    }
 
 }
 
 
 
-/**
- * @brief   Intializes GPIO pin.
+/*
+ * @brief   Initializes GPIO pin.
  * @param   *p_gpio_handle : pointer to the GPIO Handle structure (gpio_handle_t).
  * @retval  None.
  */
@@ -89,7 +96,7 @@ void gpio_init(gpio_handle_t *p_gpio_handle)
     uint8_t  pupd_select   = 0;  /*!< Variable for selecting Pull-Up or Pull-Down configurations  */
     uint8_t  pin_mode      = 0;  /*!< Variable for selecting Digital or Analog configurations     */
 
-    GPIO_clockEnable(p_gpio_handle->p_gpio_x);
+    hf_gpio_clock_enable(p_gpio_handle->p_gpio_x);
 
     /*
      * @brief Configure GPIO Pin Direction
@@ -178,7 +185,7 @@ void gpio_init(gpio_handle_t *p_gpio_handle)
 
         p_gpio_handle->p_gpio_x->AFSEL |= (p_gpio_handle->pin_config.alternate_function << p_gpio_handle->pin_config.pin_number);
 
-        p_gpio_handle->p_gpio_x->PCTL  |= (p_gpio_handle->pin_config.pctl_value << (4 * p_gpio_handle->pin_config.pin_number));
+        p_gpio_handle->p_gpio_x->PCTL  |= (p_gpio_handle->pin_config.port_control << (4 * p_gpio_handle->pin_config.pin_number));
 
     }
 

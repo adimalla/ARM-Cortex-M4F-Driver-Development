@@ -208,7 +208,7 @@ typedef struct
     uint8_t opendrain;           /*!< GPIO Pin Open Drain Select                           */
     uint8_t pullupdown;          /*!< GPIO Pin Pull-Up and Pull-Down Select                */
     uint8_t pin_mode;            /*!< GPIO Digital or Analog Register Mode Select          */
-    uint8_t pctl_value;          /*!< GPIO Port Control Register Value                     */
+    uint8_t port_control;        /*!< GPIO Port Control Register Value                     */
 
 } gpio_config_t;
 
