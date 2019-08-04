@@ -182,7 +182,7 @@ int8_t pinMode(char *port_pin, uint8_t pinDirection,...)
     }
 
     // TODO, this should be a function pointer
-    GPIO_Init(&gpioPin);
+    gpio_init(&gpioPin);
 
     va_end(gpioArgs);
 
@@ -205,27 +205,27 @@ int8_t digitalWrite(char *port_pin, uint8_t pinState)
 
     if( (strncmp(port_pin,"pa",2 ) == 0) || (strncmp(port_pin,"PA",2 ) == 0) )
     {
-        GPIO_WriteToPin(GPIOA, pinNumber, pinState);
+        gpio_write_to_pin(GPIOA, pinNumber, pinState);
     }
     else if( (strncmp(port_pin,"pb",2 ) == 0) || (strncmp(port_pin,"PB",2 ) == 0) )
     {
-        GPIO_WriteToPin(GPIOB, pinNumber, pinState);
+        gpio_write_to_pin(GPIOB, pinNumber, pinState);
     }
     else if( (strncmp(port_pin,"pc",2 ) == 0) || (strncmp(port_pin,"PC",2 ) == 0) )
     {
-        GPIO_WriteToPin(GPIOC, pinNumber, pinState);
+        gpio_write_to_pin(GPIOC, pinNumber, pinState);
     }
     else if( (strncmp(port_pin,"pd",2 ) == 0) || (strncmp(port_pin,"PD",2 ) == 0) )
     {
-        GPIO_WriteToPin(GPIOD, pinNumber, pinState);
+        gpio_write_to_pin(GPIOD, pinNumber, pinState);
     }
     else if( (strncmp(port_pin,"pe",2 ) == 0) || (strncmp(port_pin,"PE",2 ) == 0) )
     {
-        GPIO_WriteToPin(GPIOE, pinNumber, pinState);
+        gpio_write_to_pin(GPIOE, pinNumber, pinState);
     }
     else if( (strncmp(port_pin,"pf",2 ) == 0) || (strncmp(port_pin,"PF",2 ) == 0) )
     {
-        GPIO_WriteToPin(GPIOF, pinNumber, pinState);
+        gpio_write_to_pin(GPIOF, pinNumber, pinState);
     }
     else
     {
@@ -252,27 +252,27 @@ int8_t digitalRead(char *port_pin)
 
     if( (strncmp(port_pin,"pa",2 ) == 0) || (strncmp(port_pin,"PA",2 ) == 0) )
     {
-        returnValue = GPIO_ReadFromPin(GPIOA, pinNumber);
+        returnValue = gpio_read_from_pin(GPIOA, pinNumber);
     }
     else if( (strncmp(port_pin,"pb",2 ) == 0) || (strncmp(port_pin,"PB",2 ) == 0) )
     {
-        returnValue = GPIO_ReadFromPin(GPIOB, pinNumber);
+        returnValue = gpio_read_from_pin(GPIOB, pinNumber);
     }
     else if( (strncmp(port_pin,"pc",2 ) == 0) || (strncmp(port_pin,"PC",2 ) == 0) )
     {
-        returnValue = GPIO_ReadFromPin(GPIOC, pinNumber);
+        returnValue = gpio_read_from_pin(GPIOC, pinNumber);
     }
     else if( (strncmp(port_pin,"pd",2 ) == 0) || (strncmp(port_pin,"PD",2 ) == 0) )
     {
-        returnValue = GPIO_ReadFromPin(GPIOD, pinNumber);
+        returnValue = gpio_read_from_pin(GPIOD, pinNumber);
     }
     else if( (strncmp(port_pin,"pe",2 ) == 0) || (strncmp(port_pin,"PE",2 ) == 0) )
     {
-        returnValue = GPIO_ReadFromPin(GPIOE, pinNumber);
+        returnValue = gpio_read_from_pin(GPIOE, pinNumber);
     }
     else if( (strncmp(port_pin,"pf",2 ) == 0) || (strncmp(port_pin,"PF",2 ) == 0) )
     {
-        returnValue = GPIO_ReadFromPin(GPIOF, pinNumber);
+        returnValue = gpio_read_from_pin(GPIOF, pinNumber);
     }
     else
     {

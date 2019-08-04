@@ -239,7 +239,7 @@ typedef struct
  * @param   *p_gpio_handle : pointer to the GPIO Handle structure (gpio_handle_t).
  * @retval  None.
  */
-void GPIO_Init(gpio_handle_t *p_gpio_handle);
+void gpio_init(gpio_handle_t *p_gpio_handle);
 
 
 
@@ -248,7 +248,7 @@ void GPIO_Init(gpio_handle_t *p_gpio_handle);
  * @param   *p_gpio_handle : pointer to the GPIO Handle structure (gpio_handle_t).
  * @retval  None.
  */
-void GPIO_DeInit(gpio_handle_t *p_gpio_handle);
+void gpio_deinit(gpio_handle_t *p_gpio_handle);
 
 
 
@@ -258,7 +258,7 @@ void GPIO_DeInit(gpio_handle_t *p_gpio_handle);
  * @param   pin       : GPIO Pin Number.
  * @retval  uint8_t   : Return value from the pin.
  */
-uint8_t GPIO_ReadFromPin(GPIO_PORT_T *p_gpio_x, uint8_t pin);
+uint8_t gpio_read_from_pin(GPIO_PORT_T *p_gpio_x, uint8_t pin);
 
 
 
@@ -269,7 +269,7 @@ uint8_t GPIO_ReadFromPin(GPIO_PORT_T *p_gpio_x, uint8_t pin);
  * @bool    state     : Value to be written, 1 or 0.
  * @retval  None.
  */
-void GPIO_WriteToPin(GPIO_PORT_T *p_gpio_x, uint8_t pin, bool state);
+void gpio_write_to_pin(GPIO_PORT_T *p_gpio_x, uint8_t pin, bool state);
 
 
 
@@ -278,7 +278,7 @@ void GPIO_WriteToPin(GPIO_PORT_T *p_gpio_x, uint8_t pin, bool state);
  * @param   *p_gpio_x  : pointer to the GPIO port structure (GPIO_PORT_T).
  * @retval  uint8_t  : Data from the port
  */
-uint8_t GPIO_ReadFromPort(GPIO_PORT_T *p_gpio_x);
+uint8_t gpio_read_from_port(GPIO_PORT_T *p_gpio_x);
 
 
 
@@ -288,9 +288,12 @@ uint8_t GPIO_ReadFromPort(GPIO_PORT_T *p_gpio_x);
  * @param   value  : Data to be written to the port
  * @retval  None.
  */
-void GPIO_WriteToPort(GPIO_PORT_T *p_gpio_x, uint8_t value);
+void gpio_write_to_port(GPIO_PORT_T *p_gpio_x, uint8_t value);
 
 
+
+
+/******************************* TODO ***********************************************************/
 
 /*
  * @brief   Configure GPIO Interrupt

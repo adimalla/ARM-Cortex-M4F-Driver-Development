@@ -48,7 +48,7 @@
  * @param   *p_gpio_x   : pointer to the GPIO port structure (GPIO_PORT_T).
  * @retval  None.
  */
-static inline void GPIO_clockEnable(GPIO_PORT_T *p_gpio_x)
+static void GPIO_clockEnable(GPIO_PORT_T *p_gpio_x)
 {
 
     SYSCTL_T *p_sys_clock = SYSCTL;  /*!< Pointer to System Control Peripheral Structure */
@@ -82,13 +82,12 @@ static inline void GPIO_clockEnable(GPIO_PORT_T *p_gpio_x)
  * @param   *p_gpio_handle : pointer to the GPIO Handle structure (gpio_handle_t).
  * @retval  None.
  */
-void GPIO_Init(gpio_handle_t *p_gpio_handle)
+void gpio_init(gpio_handle_t *p_gpio_handle)
 {
 
     uint8_t  drive_select  = 0;  /*!< Variable for selecting drive current values                 */
     uint8_t  pupd_select   = 0;  /*!< Variable for selecting Pull-Up or Pull-Down configurations  */
     uint8_t  pin_mode      = 0;  /*!< Variable for selecting Digital or Analog configurations     */
-
 
     GPIO_clockEnable(p_gpio_handle->p_gpio_x);
 
@@ -99,11 +98,8 @@ void GPIO_Init(gpio_handle_t *p_gpio_handle)
      */
     p_gpio_handle->p_gpio_x->DIR |= (p_gpio_handle->pin_config.direction << p_gpio_handle->pin_config.pin_number);
 
-
     /* @brief Configure GPIO Pin Open Drain Select */
     p_gpio_handle->p_gpio_x->ODR |= (p_gpio_handle->pin_config.opendrain << p_gpio_handle->pin_config.pin_number);
-
-
 
     /* @brief Configure GPIO Pin Drive Select */
     drive_select = p_gpio_handle->pin_config.drive;
@@ -128,7 +124,6 @@ void GPIO_Init(gpio_handle_t *p_gpio_handle)
 
     }
 
-
     /* @brief Configure GPIO Pin Pull-Up and Pull-Down Select */
     pupd_select = p_gpio_handle->pin_config.pullupdown;
 
@@ -150,7 +145,6 @@ void GPIO_Init(gpio_handle_t *p_gpio_handle)
         break;
 
     }
-
 
     /* @brief GPIO Digital or Analog Register Mode Select  */
     pin_mode = p_gpio_handle->pin_config.pin_mode;
@@ -175,7 +169,6 @@ void GPIO_Init(gpio_handle_t *p_gpio_handle)
 
     }
 
-
     /*
      * @brief GPIO Port Control Register and GPIO Pin Alternate Function
      * @note  Values of PCTLVAL, see header file gpio_tm4c123gh6pm.h
@@ -192,13 +185,12 @@ void GPIO_Init(gpio_handle_t *p_gpio_handle)
 }
 
 
-
 /*
  * @brief   Deinitialize GPIO pin.
  * @param   *p_gpio_handle : pointer to the GPIO Handle structure (gpio_handle_t).
  * @retval  None.
  */
-void GPIO_DeInit(gpio_handle_t *p_gpio_handle)
+void gpio_deinit(gpio_handle_t *p_gpio_handle)
 {
 
 
@@ -213,7 +205,7 @@ void GPIO_DeInit(gpio_handle_t *p_gpio_handle)
  * @param   pin       : GPIO Pin Number.
  * @retval  uint8_t   : Return value from the pin.
  */
-uint8_t GPIO_ReadFromPin(GPIO_PORT_T *p_gpio_x, uint8_t pin)
+uint8_t gpio_read_from_pin(GPIO_PORT_T *p_gpio_x, uint8_t pin)
 {
 
     uint8_t retval = 0;                /*!< Variable to store the return value of the pin                       */
@@ -232,7 +224,7 @@ uint8_t GPIO_ReadFromPin(GPIO_PORT_T *p_gpio_x, uint8_t pin)
  * @bool    value     : Value to be written, 1 or 0.
  * @retval  None.
  */
-void GPIO_WriteToPin(GPIO_PORT_T *p_gpio_x, uint8_t pin, bool value)
+void gpio_write_to_pin(GPIO_PORT_T *p_gpio_x, uint8_t pin, bool value)
 {
 
     if (value == ENABLE)
@@ -250,7 +242,7 @@ void GPIO_WriteToPin(GPIO_PORT_T *p_gpio_x, uint8_t pin, bool value)
  * @param   *p_gpio_x  : pointer to the GPIO port structure (GPIO_PORT_T).
  * @retval  uint8_t  : Data from the port
  */
-uint8_t GPIO_ReadFromPort(GPIO_PORT_T *p_gpio_x)
+uint8_t gpio_read_from_port(GPIO_PORT_T *p_gpio_x)
 {
 
     uint8_t retVal = 0;              /*!< Variable to store the return value of the port */
@@ -268,11 +260,9 @@ uint8_t GPIO_ReadFromPort(GPIO_PORT_T *p_gpio_x)
  * @param   value  : Data to be written to the port
  * @retval  None.
  */
-void GPIO_WriteToPort(GPIO_PORT_T *p_gpio_x, uint8_t value)
+void gpio_write_to_port(GPIO_PORT_T *p_gpio_x, uint8_t value)
 {
-
     p_gpio_x->DATA = value;  /*!< Write value directly to the Data Register */
-
 }
 
 
