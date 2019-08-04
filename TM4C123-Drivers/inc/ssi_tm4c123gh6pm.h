@@ -123,12 +123,14 @@
  */
 typedef struct
 {
-    uint8_t device_mode;     /*!< SSI Device Mode Select, Master/Slave */
-    uint8_t clock_source;    /*!< SSI Clock Source Select              */
-    uint8_t clock_phase;     /*!< SSI Clock Phase Select               */
-    uint8_t clock_polarity;  /*!< SSI Clock Polarity Select            */
-    uint8_t clock_speed;     /*!< SSI Clock Speed Select               */
-    uint8_t frame_format;    /*!< SSI Frame Format Select              */
+    uint8_t device_mode;      /*!< SSI Device Mode Select, Master/Slave */
+    uint8_t clock_source;     /*!< SSI Clock Source Select              */
+    uint8_t clock_phase;      /*!< SSI Clock Phase Select               */
+    uint8_t clock_polarity;   /*!< SSI Clock Polarity Select            */
+    uint8_t clock_speed;      /*!< SSI Clock Speed Select               */
+    uint8_t frame_format;     /*!< SSI Frame Format Select              */
+
+    GPIO_PORT_T *clock_port;  /*!< SSI Clock Pin Port initialize        */
 
 } ssi_config_t;
 
@@ -153,6 +155,13 @@ typedef struct
 /******************************************************************************/
 
 
+int8_t ssi_init(ssi_handle_t *p_ssi_handle);
+
+
+void ssi_send_data(ssi_handle_t *p_ssi_handle, uint8_t *p_txbuffer, uint32_t len);
+
+
+int8_t ssi_receive_data(ssi_handle_t *p_ssi_handle, uint8_t *p_rxbuffer, uint32_t len);
 
 
 
