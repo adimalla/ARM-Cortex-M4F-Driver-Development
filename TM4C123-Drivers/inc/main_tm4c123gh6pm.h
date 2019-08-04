@@ -590,6 +590,29 @@ typedef struct
 
 
 
+/**
+  * @brief Synchronous Serial Interface peripheral (SSI) Register Structure
+  */
+
+typedef struct
+{
+  __IO uint32_t  CR0;             /*!< SSI Control 0,                Address offset: 0x000          */
+  __IO uint32_t  CR1;             /*!< SSI Control 1,                Address offset: 0x004          */
+  __IO uint32_t  DR;              /*!< SSI Data,                     Address offset: 0x008          */
+  __IO uint32_t  SR;              /*!< SSI Status,                   Address offset: 0x00C          */
+  __IO uint32_t  CPSR;            /*!< SSI Clock Prescale,           Address offset: 0x010          */
+  __IO uint32_t  IM;              /*!< SSI Interrupt Mask,           Address offset: 0x014          */
+  __IO uint32_t  RIS;             /*!< SSI Raw Interrupt Status,     Address offset: 0x018          */
+  __IO uint32_t  MIS;             /*!< SSI Masked Interrupt Status,  Address offset: 0x01C          */
+  __O  uint32_t  ICR;             /*!< SSI Interrupt Clear,          Address offset: 0x020          */
+  __IO uint32_t  DMACTL;          /*!< SSI DMA Control,              Address offset: 0x024          */
+  __I  uint32_t  RESERVED[1000];  /*!< RESERVED,                     Address offset: 0x028 to 0xFC4 */
+  __IO uint32_t  CC;              /*!< SSI Clock Configuration       Address offset: 0xFC8          */
+
+} SSI_PERIPH_T;
+
+
+
 /***************************************************************************/
 /*                                                                         */
 /*                       Device Peripheral Definitions                     */
@@ -613,6 +636,11 @@ typedef struct
 #define GPIOD_AHB                ((GPIO_PORT_T *) GPIOD_AHB_BASEADDR)
 #define GPIOE_AHB                ((GPIO_PORT_T *) GPIOE_AHB_BASEADDR)
 #define GPIOF_AHB                ((GPIO_PORT_T *) GPIOF_AHB_BASEADDR)
+
+#define SSI0                     ((SSI_PERIPH_T *) SSI0_BASEADDR)
+#define SSI1                     ((SSI_PERIPH_T *) SSI1_BASEADDR)
+#define SSI2                     ((SSI_PERIPH_T *) SSI2_BASEADDR)
+#define SSI3                     ((SSI_PERIPH_T *) SSI3_BASEADDR)
 
 #define SYSCTL                   ((SYSCTL_T        *)SYSCTL_BASEADDR)
 #define SYSCTL_LEGACY            ((SYSCTL_LEGACY_T *)SYSCTL_BASEADDR)
