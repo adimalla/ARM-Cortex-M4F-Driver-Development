@@ -49,7 +49,7 @@
 static void _hf_setPinDefaults(gpio_handle_t *gpioPin)
 {
     gpioPin->pin_config.drive      = GPIO_DR2R;
-    gpioPin->pin_config.pin_mode    = GPIO_DEN_ENABLE;
+    gpioPin->pin_config.pin_mode   = GPIO_DEN_ENABLE;
     gpioPin->pin_config.pullupdown = GPIO_NOPUPD;
     gpioPin->pin_config.opendrain  = GPIO_ODDR_DISABLE;
 }
