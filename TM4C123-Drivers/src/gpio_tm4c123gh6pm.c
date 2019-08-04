@@ -51,29 +51,27 @@
 static inline void GPIO_clockEnable(GPIO_PORT_T *p_gpio_x)
 {
 
-    GPIO_PORT_T *portAddress = p_gpio_x;  /*!< Pointer to the Address of the GPIO port            */
-    SYSCTL_T    *sysClock    = SYSCTL;  /*!< Pointer to the Address of System Control Structure */
-
+    SYSCTL_T *p_sys_clock = SYSCTL;  /*!< Pointer to System Control Peripheral Structure */
 
     /* @brief Enable Clock for GPIO ports with re initialization check  */
 
-    if(portAddress == GPIOA && !(sysClock->RCGCGPIO & 0x01UL))
-        sysClock->RCGCGPIO |= (0x01UL);
+    if(p_gpio_x == GPIOA && !(p_sys_clock->RCGCGPIO & 0x01UL))
+        p_sys_clock->RCGCGPIO |= (0x01UL);
 
-    else if(portAddress == GPIOB && !( sysClock->RCGCGPIO & (1 << 1) ))
-        sysClock->RCGCGPIO |= (1 << 1);
+    else if(p_gpio_x == GPIOB && !( p_sys_clock->RCGCGPIO & (1 << 1) ))
+        p_sys_clock->RCGCGPIO |= (1 << 1);
 
-    else if(portAddress == GPIOC && !( sysClock->RCGCGPIO & (1 << 2) ))
-        sysClock->RCGCGPIO |= (1 << 2);
+    else if(p_gpio_x == GPIOC && !( p_sys_clock->RCGCGPIO & (1 << 2) ))
+        p_sys_clock->RCGCGPIO |= (1 << 2);
 
-    else if(portAddress == GPIOD && !( sysClock->RCGCGPIO & (1 << 3) ))
-        sysClock->RCGCGPIO |= (1 << 3);
+    else if(p_gpio_x == GPIOD && !( p_sys_clock->RCGCGPIO & (1 << 3) ))
+        p_sys_clock->RCGCGPIO |= (1 << 3);
 
-    else if(portAddress == GPIOE && !( sysClock->RCGCGPIO & (1 << 4) ))
-        sysClock->RCGCGPIO |= (1 << 4);
+    else if(p_gpio_x == GPIOE && !( p_sys_clock->RCGCGPIO & (1 << 4) ))
+        p_sys_clock->RCGCGPIO |= (1 << 4);
 
-    else if(portAddress == GPIOF && !( sysClock->RCGCGPIO & (1 << 5) ))
-        sysClock->RCGCGPIO |= (1 << 5);
+    else if(p_gpio_x == GPIOF && !( p_sys_clock->RCGCGPIO & (1 << 5) ))
+        p_sys_clock->RCGCGPIO |= (1 << 5);
 
 }
 
@@ -81,48 +79,48 @@ static inline void GPIO_clockEnable(GPIO_PORT_T *p_gpio_x)
 
 /**
  * @brief   Intializes GPIO pin.
- * @param   *pGPIOHandle : pointer to the GPIO Handle structure (gpio_handle_t).
+ * @param   *p_gpio_handle : pointer to the GPIO Handle structure (gpio_handle_t).
  * @retval  None.
  */
-void GPIO_Init(gpio_handle_t *pGPIOHandle)
+void GPIO_Init(gpio_handle_t *p_gpio_handle)
 {
 
-    uint8_t  driveSelect  = 0;  /*!< Variable for selecting drive current values                 */
-    uint8_t  pupdSelect   = 0;  /*!< Variable for selecting Pull-Up or Pull-Down configurations  */
-    uint8_t  pinMode      = 0;  /*!< Variable for selecting Digital or Analog configurations     */
+    uint8_t  drive_select  = 0;  /*!< Variable for selecting drive current values                 */
+    uint8_t  pupd_select   = 0;  /*!< Variable for selecting Pull-Up or Pull-Down configurations  */
+    uint8_t  pin_mode      = 0;  /*!< Variable for selecting Digital or Analog configurations     */
 
 
-    GPIO_clockEnable(pGPIOHandle->p_gpio_x);
+    GPIO_clockEnable(p_gpio_handle->p_gpio_x);
 
     /*
      * @brief Configure GPIO Pin Direction
      * @note  All configurations are done by simply left shifting value set in the gpiopinConfig structure by PIN NUMBER (Set by User)
      * @note  See Value of Switch cases in header file gpio_tm4c123gh6pm.h
      */
-    pGPIOHandle->p_gpio_x->DIR |= (pGPIOHandle->gpioPinConfig.direction << pGPIOHandle->gpioPinConfig.pin_number);
+    p_gpio_handle->p_gpio_x->DIR |= (p_gpio_handle->pin_config.direction << p_gpio_handle->pin_config.pin_number);
 
 
     /* @brief Configure GPIO Pin Open Drain Select */
-    pGPIOHandle->p_gpio_x->ODR |= (pGPIOHandle->gpioPinConfig.opendrain << pGPIOHandle->gpioPinConfig.pin_number);
+    p_gpio_handle->p_gpio_x->ODR |= (p_gpio_handle->pin_config.opendrain << p_gpio_handle->pin_config.pin_number);
 
 
 
     /* @brief Configure GPIO Pin Drive Select */
-    driveSelect = pGPIOHandle->gpioPinConfig.drive;
+    drive_select = p_gpio_handle->pin_config.drive;
 
-    switch(driveSelect)
+    switch(drive_select)
     {
 
     case GPIO_DR2R:
-        pGPIOHandle->p_gpio_x->DR2R |= (1 << pGPIOHandle->gpioPinConfig.pin_number);
+        p_gpio_handle->p_gpio_x->DR2R |= (1 << p_gpio_handle->pin_config.pin_number);
         break;
 
     case GPIO_DR4R:
-        pGPIOHandle->p_gpio_x->DR4R |= (1 << pGPIOHandle->gpioPinConfig.pin_number);
+        p_gpio_handle->p_gpio_x->DR4R |= (1 << p_gpio_handle->pin_config.pin_number);
         break;
 
     case GPIO_DR8R:
-        pGPIOHandle->p_gpio_x->DR8R |= (1 << pGPIOHandle->gpioPinConfig.pin_number);
+        p_gpio_handle->p_gpio_x->DR8R |= (1 << p_gpio_handle->pin_config.pin_number);
         break;
 
     default:
@@ -132,20 +130,20 @@ void GPIO_Init(gpio_handle_t *pGPIOHandle)
 
 
     /* @brief Configure GPIO Pin Pull-Up and Pull-Down Select */
-    pupdSelect = pGPIOHandle->gpioPinConfig.pullupdown;
+    pupd_select = p_gpio_handle->pin_config.pullupdown;
 
-    switch(pupdSelect)
+    switch(pupd_select)
     {
 
     case GPIO_NOPUPD:
         break;
 
     case GPIO_PUR_ENABLE:
-        pGPIOHandle->p_gpio_x->PUR |= (1 << pGPIOHandle->gpioPinConfig.pin_number);
+        p_gpio_handle->p_gpio_x->PUR |= (1 << p_gpio_handle->pin_config.pin_number);
         break;
 
     case GPIO_PDR_ENABLE:
-        pGPIOHandle->p_gpio_x->PDR |= (1 << pGPIOHandle->gpioPinConfig.pin_number);
+        p_gpio_handle->p_gpio_x->PDR |= (1 << p_gpio_handle->pin_config.pin_number);
         break;
 
     default:
@@ -155,21 +153,21 @@ void GPIO_Init(gpio_handle_t *pGPIOHandle)
 
 
     /* @brief GPIO Digital or Analog Register Mode Select  */
-    pinMode = pGPIOHandle->gpioPinConfig.pin_mode;
+    pin_mode = p_gpio_handle->pin_config.pin_mode;
 
-    switch(pinMode)
+    switch(pin_mode)
     {
 
     case GPIO_DEN_ENABLE:
-        pGPIOHandle->p_gpio_x->AMSEL &= ~(1 << pGPIOHandle->gpioPinConfig.pin_number);
-        pGPIOHandle->p_gpio_x->DEN   &= ~(1 << pGPIOHandle->gpioPinConfig.pin_number);
-        pGPIOHandle->p_gpio_x->DEN   |= (1 << pGPIOHandle->gpioPinConfig.pin_number);
+        p_gpio_handle->p_gpio_x->AMSEL &= ~(1 << p_gpio_handle->pin_config.pin_number);
+        p_gpio_handle->p_gpio_x->DEN   &= ~(1 << p_gpio_handle->pin_config.pin_number);
+        p_gpio_handle->p_gpio_x->DEN   |= (1 << p_gpio_handle->pin_config.pin_number);
         break;
 
     case GPIO_AMSEL_ENABLE:
-        pGPIOHandle->p_gpio_x->DEN   &= ~(1 << pGPIOHandle->gpioPinConfig.pin_number);
-        pGPIOHandle->p_gpio_x->AMSEL &= ~(1 << pGPIOHandle->gpioPinConfig.pin_number);
-        pGPIOHandle->p_gpio_x->AMSEL |= (1 << pGPIOHandle->gpioPinConfig.pin_number);
+        p_gpio_handle->p_gpio_x->DEN   &= ~(1 << p_gpio_handle->pin_config.pin_number);
+        p_gpio_handle->p_gpio_x->AMSEL &= ~(1 << p_gpio_handle->pin_config.pin_number);
+        p_gpio_handle->p_gpio_x->AMSEL |= (1 << p_gpio_handle->pin_config.pin_number);
         break;
 
     default:
@@ -182,12 +180,12 @@ void GPIO_Init(gpio_handle_t *pGPIOHandle)
      * @brief GPIO Port Control Register and GPIO Pin Alternate Function
      * @note  Values of PCTLVAL, see header file gpio_tm4c123gh6pm.h
      */
-    if(pGPIOHandle->gpioPinConfig.alternate_function == GPIO_AFSEL_ENABLE)
+    if(p_gpio_handle->pin_config.alternate_function == GPIO_AFSEL_ENABLE)
     {
 
-        pGPIOHandle->p_gpio_x->AFSEL |= (pGPIOHandle->gpioPinConfig.alternate_function << pGPIOHandle->gpioPinConfig.pin_number);
+        p_gpio_handle->p_gpio_x->AFSEL |= (p_gpio_handle->pin_config.alternate_function << p_gpio_handle->pin_config.pin_number);
 
-        pGPIOHandle->p_gpio_x->PCTL  |= (pGPIOHandle->gpioPinConfig.pctl_value << (4 * pGPIOHandle->gpioPinConfig.pin_number));
+        p_gpio_handle->p_gpio_x->PCTL  |= (p_gpio_handle->pin_config.pctl_value << (4 * p_gpio_handle->pin_config.pin_number));
 
     }
 
@@ -197,10 +195,10 @@ void GPIO_Init(gpio_handle_t *pGPIOHandle)
 
 /*
  * @brief   Deinitialize GPIO pin.
- * @param   *pGPIOHandle : pointer to the GPIO Handle structure (gpio_handle_t).
+ * @param   *p_gpio_handle : pointer to the GPIO Handle structure (gpio_handle_t).
  * @retval  None.
  */
-void GPIO_DeInit(gpio_handle_t *pGPIOHandle)
+void GPIO_DeInit(gpio_handle_t *p_gpio_handle)
 {
 
 
@@ -211,37 +209,37 @@ void GPIO_DeInit(gpio_handle_t *pGPIOHandle)
 
 /*
  * @brief   Read from GPIO pin (Blocking function)
- * @param   *p_gpio_x   : pointer to the GPIO port structure (GPIO_PORT_T).
- * @param   pinNumber : GPIO Pin Number.
+ * @param   *p_gpio_x : pointer to the GPIO port structure (GPIO_PORT_T).
+ * @param   pin       : GPIO Pin Number.
  * @retval  uint8_t   : Return value from the pin.
  */
-uint8_t GPIO_ReadFromPin(GPIO_PORT_T *p_gpio_x, uint8_t pinNumber)
+uint8_t GPIO_ReadFromPin(GPIO_PORT_T *p_gpio_x, uint8_t pin)
 {
 
-    uint8_t retVal = 0;                     /*!< Variable to store the return value of the pin                       */
+    uint8_t retval = 0;                /*!< Variable to store the return value of the pin                       */
 
-    retVal = (p_gpio_x->DATA >> pinNumber);   /*!< Shift value from the pin to LSB and mask it with 0xFF (Masking bit) */
+    retval = (p_gpio_x->DATA >> pin);  /*!< Shift value from the pin to LSB and mask it with 0xFF (Masking bit) */
 
-    return retVal;
+    return retval;
 }
 
 
 
 /*
  * @brief   Write to GPIO pin
- * @param   *p_gpio_x   : pointer to the GPIO port structure (GPIO_PORT_T).
- * @param   pinNumber : GPIO Pin Number
+ * @param   *p_gpio_x : pointer to the GPIO port structure (GPIO_PORT_T).
+ * @param   pin       : GPIO Pin Number
  * @bool    value     : Value to be written, 1 or 0.
  * @retval  None.
  */
-void GPIO_WriteToPin(GPIO_PORT_T *p_gpio_x, uint8_t pinNumber, bool value)
+void GPIO_WriteToPin(GPIO_PORT_T *p_gpio_x, uint8_t pin, bool value)
 {
 
     if (value == ENABLE)
-        p_gpio_x->DATA |= (1 << pinNumber);   /*!< Set bit of the corresponding Pin Number   */
+        p_gpio_x->DATA |= (1 << pin);   /*!< Set bit of the corresponding Pin Number   */
 
     else if (value == DISABLE)
-        p_gpio_x->DATA &= ~(1 << pinNumber);  /*!< Clear bit of the corresponding Pin Number */
+        p_gpio_x->DATA &= ~(1 << pin);  /*!< Clear bit of the corresponding Pin Number */
 
 }
 

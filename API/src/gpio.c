@@ -48,10 +48,10 @@
 
 static void _hf_setPinDefaults(gpio_handle_t *gpioPin)
 {
-    gpioPin->gpioPinConfig.drive      = GPIO_DR2R;
-    gpioPin->gpioPinConfig.pin_mode    = GPIO_DEN_ENABLE;
-    gpioPin->gpioPinConfig.pullupdown = GPIO_NOPUPD;
-    gpioPin->gpioPinConfig.opendrain  = GPIO_ODDR_DISABLE;
+    gpioPin->pin_config.drive      = GPIO_DR2R;
+    gpioPin->pin_config.pin_mode    = GPIO_DEN_ENABLE;
+    gpioPin->pin_config.pullupdown = GPIO_NOPUPD;
+    gpioPin->pin_config.opendrain  = GPIO_ODDR_DISABLE;
 }
 
 
@@ -113,14 +113,14 @@ int8_t pinMode(char *port_pin, uint8_t pinDirection,...)
     pinNumber = port_pin[2] - 48;
 
     /* @brief Prevent user from accessing JTAG pins on GPIO Port C */
-    gpioPin.gpioPinConfig.pin_number = pinNumber;
+    gpioPin.pin_config.pin_number = pinNumber;
     if( (gpioPin.p_gpio_x == GPIOC) && (pinNumber <= 3) )
     {
         return -1;
     }
 
 
-    gpioPin.gpioPinConfig.direction = pinDirection;
+    gpioPin.pin_config.direction = pinDirection;
 
 
     _hf_setPinDefaults(&gpioPin);
@@ -139,9 +139,9 @@ int8_t pinMode(char *port_pin, uint8_t pinDirection,...)
         {
 
         case DIGITAL:
-            if(gpioPin.gpioPinConfig.pin_mode != GPIO_AMSEL_ENABLE)
+            if(gpioPin.pin_config.pin_mode != GPIO_AMSEL_ENABLE)
             {
-                gpioPin.gpioPinConfig.pin_mode = GPIO_DEN_ENABLE;
+                gpioPin.pin_config.pin_mode = GPIO_DEN_ENABLE;
 
                 digitalSetFlag = 1;
             }
@@ -150,30 +150,30 @@ int8_t pinMode(char *port_pin, uint8_t pinDirection,...)
         case ANALOG:
             if(digitalSetFlag == 0)
             {
-                gpioPin.gpioPinConfig.pin_mode = GPIO_AMSEL_ENABLE;
+                gpioPin.pin_config.pin_mode = GPIO_AMSEL_ENABLE;
             }
             break;
 
         case PULLUP:
-            if(gpioPin.gpioPinConfig.pullupdown != GPIO_PDR_ENABLE)
+            if(gpioPin.pin_config.pullupdown != GPIO_PDR_ENABLE)
             {
-                gpioPin.gpioPinConfig.pullupdown = GPIO_PUR_ENABLE;
+                gpioPin.pin_config.pullupdown = GPIO_PUR_ENABLE;
             }
             break;
 
         case PULLDOWN:
-            if(gpioPin.gpioPinConfig.pullupdown != GPIO_PUR_ENABLE)
+            if(gpioPin.pin_config.pullupdown != GPIO_PUR_ENABLE)
             {
-                gpioPin.gpioPinConfig.pullupdown = GPIO_PDR_ENABLE;
+                gpioPin.pin_config.pullupdown = GPIO_PDR_ENABLE;
             }
             break;
 
         case OPEN_DRAIN:
-            gpioPin.gpioPinConfig.opendrain = GPIO_ODDR_ENABLE;
+            gpioPin.pin_config.opendrain = GPIO_ODDR_ENABLE;
             break;
 
         case DRIVE_4MA:
-            gpioPin.gpioPinConfig.drive = GPIO_DR4R;
+            gpioPin.pin_config.drive = GPIO_DR4R;
             break;
 
         }

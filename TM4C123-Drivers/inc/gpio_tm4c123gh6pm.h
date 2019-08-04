@@ -218,8 +218,8 @@ typedef struct
  */
 typedef struct
 {
-    GPIO_PORT_T    *p_gpio_x;      /*!< Pointer to GPIO Peripheral Address                         */
-    gpio_config_t  gpioPinConfig;  /*!< Variable Declaration GPIO pin configuration data structure */
+    GPIO_PORT_T    *p_gpio_x;  /*!< Pointer to GPIO Peripheral Address                         */
+    gpio_config_t  pin_config; /*!< Variable Declaration GPIO pin configuration data structure */
 
 } gpio_handle_t;
 
@@ -236,19 +236,19 @@ typedef struct
 
 /*
  * @brief   Intializes GPIO pin.
- * @param   *pGPIOHandle : pointer to the GPIO Handle structure (gpio_handle_t).
+ * @param   *p_gpio_handle : pointer to the GPIO Handle structure (gpio_handle_t).
  * @retval  None.
  */
-void GPIO_Init(gpio_handle_t *pGPIOHandle);
+void GPIO_Init(gpio_handle_t *p_gpio_handle);
 
 
 
 /*
  * @brief   Deinitialize GPIO pin.
- * @param   *pGPIOHandle : pointer to the GPIO Handle structure (gpio_handle_t).
+ * @param   *p_gpio_handle : pointer to the GPIO Handle structure (gpio_handle_t).
  * @retval  None.
  */
-void GPIO_DeInit(gpio_handle_t *pGPIOHandle);
+void GPIO_DeInit(gpio_handle_t *p_gpio_handle);
 
 
 
@@ -264,12 +264,12 @@ uint8_t GPIO_ReadFromPin(GPIO_PORT_T *p_gpio_x, uint8_t pin);
 
 /*
  * @brief   Write to GPIO pin
- * @param   *p_gpio_x   : pointer to the GPIO port structure (GPIO_PORT_T).
- * @param   pinNumber : GPIO Pin Number
- * @bool    value     : Value to be written, 1 or 0.
+ * @param   *p_gpio_x : pointer to the GPIO port structure (GPIO_PORT_T).
+ * @param   pin       : GPIO Pin Number
+ * @bool    state     : Value to be written, 1 or 0.
  * @retval  None.
  */
-void GPIO_WriteToPin(GPIO_PORT_T *p_gpio_x, uint8_t pinNumber, bool value);
+void GPIO_WriteToPin(GPIO_PORT_T *p_gpio_x, uint8_t pin, bool state);
 
 
 
