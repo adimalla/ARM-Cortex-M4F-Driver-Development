@@ -46,12 +46,12 @@
 
 
 
-static void _hf_setPinDefaults(GPIO_HANDLE_T *gpioPin)
+static void _hf_setPinDefaults(gpio_handle_t *gpioPin)
 {
-    gpioPin->gpioPinConfig.DRIVE      = GPIO_DR2R;
-    gpioPin->gpioPinConfig.PINMODE    = GPIO_DEN_ENABLE;
-    gpioPin->gpioPinConfig.PULLUPDOWN = GPIO_NOPUPD;
-    gpioPin->gpioPinConfig.OPENDRAIN  = GPIO_ODDR_DISABLE;
+    gpioPin->gpioPinConfig.drive      = GPIO_DR2R;
+    gpioPin->gpioPinConfig.pin_mode    = GPIO_DEN_ENABLE;
+    gpioPin->gpioPinConfig.pullupdown = GPIO_NOPUPD;
+    gpioPin->gpioPinConfig.opendrain  = GPIO_ODDR_DISABLE;
 }
 
 
@@ -68,7 +68,7 @@ int8_t pinMode(char *port_pin, uint8_t pinDirection,...)
 
     va_list gpioArgs;
 
-    GPIO_HANDLE_T gpioPin;
+    gpio_handle_t gpioPin;
 
     uint8_t pinNumber = 0;
     uint8_t argValue  = 0;
@@ -82,27 +82,27 @@ int8_t pinMode(char *port_pin, uint8_t pinDirection,...)
 
     if( (strncmp(port_pin,"pa",2 ) == 0) || (strncmp(port_pin,"PA",2 ) == 0) )
     {
-        gpioPin.pGPIOx = GPIOA;
+        gpioPin.p_gpio_x = GPIOA;
     }
     else if( (strncmp(port_pin,"pb",2 ) == 0) || (strncmp(port_pin,"PB",2 ) == 0) )
     {
-        gpioPin.pGPIOx = GPIOB;
+        gpioPin.p_gpio_x = GPIOB;
     }
     else if( (strncmp(port_pin,"pc",2 ) == 0) || (strncmp(port_pin,"PC",2 ) == 0) )
     {
-        gpioPin.pGPIOx = GPIOC;
+        gpioPin.p_gpio_x = GPIOC;
     }
     else if( (strncmp(port_pin,"pd",2 ) == 0) || (strncmp(port_pin,"PD",2 ) == 0) )
     {
-        gpioPin.pGPIOx = GPIOD;
+        gpioPin.p_gpio_x = GPIOD;
     }
     else if( (strncmp(port_pin,"pe",2 ) == 0) || (strncmp(port_pin,"PE",2 ) == 0) )
     {
-        gpioPin.pGPIOx = GPIOE;
+        gpioPin.p_gpio_x = GPIOE;
     }
     else if( (strncmp(port_pin,"pf",2 ) == 0) || (strncmp(port_pin,"PF",2 ) == 0) )
     {
-        gpioPin.pGPIOx = GPIOF;
+        gpioPin.p_gpio_x = GPIOF;
     }
     else
     {
@@ -113,14 +113,14 @@ int8_t pinMode(char *port_pin, uint8_t pinDirection,...)
     pinNumber = port_pin[2] - 48;
 
     /* @brief Prevent user from accessing JTAG pins on GPIO Port C */
-    gpioPin.gpioPinConfig.PINNUMBER = pinNumber;
-    if( (gpioPin.pGPIOx == GPIOC) && (pinNumber <= 3) )
+    gpioPin.gpioPinConfig.pin_number = pinNumber;
+    if( (gpioPin.p_gpio_x == GPIOC) && (pinNumber <= 3) )
     {
         return -1;
     }
 
 
-    gpioPin.gpioPinConfig.DIRECTION = pinDirection;
+    gpioPin.gpioPinConfig.direction = pinDirection;
 
 
     _hf_setPinDefaults(&gpioPin);
@@ -139,9 +139,9 @@ int8_t pinMode(char *port_pin, uint8_t pinDirection,...)
         {
 
         case DIGITAL:
-            if(gpioPin.gpioPinConfig.PINMODE != GPIO_AMSEL_ENABLE)
+            if(gpioPin.gpioPinConfig.pin_mode != GPIO_AMSEL_ENABLE)
             {
-                gpioPin.gpioPinConfig.PINMODE = GPIO_DEN_ENABLE;
+                gpioPin.gpioPinConfig.pin_mode = GPIO_DEN_ENABLE;
 
                 digitalSetFlag = 1;
             }
@@ -150,30 +150,30 @@ int8_t pinMode(char *port_pin, uint8_t pinDirection,...)
         case ANALOG:
             if(digitalSetFlag == 0)
             {
-                gpioPin.gpioPinConfig.PINMODE = GPIO_AMSEL_ENABLE;
+                gpioPin.gpioPinConfig.pin_mode = GPIO_AMSEL_ENABLE;
             }
             break;
 
         case PULLUP:
-            if(gpioPin.gpioPinConfig.PINMODE != GPIO_PDR_ENABLE)
+            if(gpioPin.gpioPinConfig.pullupdown != GPIO_PDR_ENABLE)
             {
-                gpioPin.gpioPinConfig.PULLUPDOWN = GPIO_PUR_ENABLE;
+                gpioPin.gpioPinConfig.pullupdown = GPIO_PUR_ENABLE;
             }
             break;
 
         case PULLDOWN:
-            if(gpioPin.gpioPinConfig.PINMODE != GPIO_PUR_ENABLE)
+            if(gpioPin.gpioPinConfig.pullupdown != GPIO_PUR_ENABLE)
             {
-                gpioPin.gpioPinConfig.PULLUPDOWN = GPIO_PDR_ENABLE;
+                gpioPin.gpioPinConfig.pullupdown = GPIO_PDR_ENABLE;
             }
             break;
 
         case OPEN_DRAIN:
-            gpioPin.gpioPinConfig.OPENDRAIN = GPIO_ODDR_ENABLE;
+            gpioPin.gpioPinConfig.opendrain = GPIO_ODDR_ENABLE;
             break;
 
         case DRIVE_4MA:
-            gpioPin.gpioPinConfig.OPENDRAIN = GPIO_DR4R;
+            gpioPin.gpioPinConfig.drive = GPIO_DR4R;
             break;
 
         }
