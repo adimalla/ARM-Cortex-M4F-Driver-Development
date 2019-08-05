@@ -54,33 +54,47 @@ static void hf_gpio_clock_enable(GPIO_PORT_T *p_gpio_x)
     SYSCTL_T *p_sys_clock = SYSCTL;  /*!< Pointer to System Control Peripheral Structure */
 
     /* @brief Enable Clock for GPIO ports with re initialization check  */
-
     if(p_gpio_x == GPIOA && !(p_sys_clock->RCGCGPIO & GPIOA_ENABLE))
     {
         p_sys_clock->RCGCGPIO |= GPIOA_ENABLE;
 
         /* @brief Check if GPIO Peripheral  is ready */
-        //while(p_sys_clock->PRSSI & SSI3_ENABLE);
+        while( !(p_sys_clock->PRGPIO & GPIOA_ENABLE) );
     }
     else if(p_gpio_x == GPIOB && !(p_sys_clock->RCGCGPIO & GPIOB_ENABLE) )
     {
         p_sys_clock->RCGCGPIO |= GPIOB_ENABLE;
+
+        /* @brief Check if GPIO Peripheral  is ready */
+        while( !(p_sys_clock->PRGPIO & GPIOB_ENABLE) );
     }
     else if( p_gpio_x == GPIOC && !(p_sys_clock->RCGCGPIO & GPIOC_ENABLE) )
     {
         p_sys_clock->RCGCGPIO |= GPIOC_ENABLE;
+
+        /* @brief Check if GPIO Peripheral  is ready */
+        while( !(p_sys_clock->PRGPIO & GPIOC_ENABLE) );
     }
     else if(p_gpio_x == GPIOD && !(p_sys_clock->RCGCGPIO & GPIOD_ENABLE) )
     {
         p_sys_clock->RCGCGPIO |= GPIOD_ENABLE;
+
+        /* @brief Check if GPIO Peripheral  is ready */
+        while( !(p_sys_clock->PRGPIO & GPIOD_ENABLE) );
     }
     else if(p_gpio_x == GPIOE && !(p_sys_clock->RCGCGPIO & GPIOE_ENABLE) )
     {
         p_sys_clock->RCGCGPIO |= GPIOE_ENABLE;
+
+        /* @brief Check if GPIO Peripheral  is ready */
+        while( !(p_sys_clock->PRGPIO & GPIOE_ENABLE) );
     }
     else if( (p_gpio_x == GPIOF) && !(p_sys_clock->RCGCGPIO & GPIOF_ENABLE) )
     {
         p_sys_clock->RCGCGPIO |= GPIOF_ENABLE;
+
+        /* @brief Check if GPIO Peripheral  is ready */
+        while( !(p_sys_clock->PRGPIO & GPIOF_ENABLE) );
     }
 
 }
