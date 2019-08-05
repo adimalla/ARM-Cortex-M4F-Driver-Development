@@ -78,6 +78,11 @@ static void hf_ssi_clock_enable(SSI_PERIPH_T *p_ssi_x)
 }
 
 
+/*
+ * @brief   helper function to enable SPI Peripheral Clock
+ * @param   *p_ssi_x     : *p_ssi_handle : pointer to the SSI Handle structure (ssi_handle_t).
+ * @retval  SSI_PERIPH_T : pointer to the SPI peripheral structure (SSI_PERIPH_T).
+ */
 static SSI_PERIPH_T* hf_ssi_pin_config(ssi_handle_t *p_ssi_handle)
 {
 
@@ -116,6 +121,11 @@ static SSI_PERIPH_T* hf_ssi_pin_config(ssi_handle_t *p_ssi_handle)
     }
     else if( ssi_clk_port == GPIOD )
     {
+        if(p_ssi_handle->p_ssi_x != SSI1 || p_ssi_handle->p_ssi_x != SSI3 )
+        {
+            return (SSI_PERIPH_T *)0;
+        }
+
         /* @brief Select SSI1 or SSI3 pin pack */
 
         ssi_pins.p_gpio_x                = GPIOD;
@@ -147,6 +157,11 @@ static SSI_PERIPH_T* hf_ssi_pin_config(ssi_handle_t *p_ssi_handle)
     }
     else if( ssi_clk_port == GPIOF )
     {
+        if(p_ssi_handle->p_ssi_x != SSI1)
+        {
+            return (SSI_PERIPH_T *)0;
+        }
+
         /* @brief Select SSI1 pin pack */
         ssi_pins.p_gpio_x                = GPIOF;
         ssi_pins.pin_config.port_control = PCTL_AF2;
@@ -168,6 +183,11 @@ static SSI_PERIPH_T* hf_ssi_pin_config(ssi_handle_t *p_ssi_handle)
     }
     else if( ssi_clk_port == GPIOB )
     {
+        if(p_ssi_handle->p_ssi_x != SSI2)
+        {
+            return (SSI_PERIPH_T *)0;
+        }
+
         /* @brief Select SSI1 pin pack */
         ssi_pins.p_gpio_x                = GPIOB;
         ssi_pins.pin_config.port_control = PCTL_AF2;
@@ -197,7 +217,7 @@ static SSI_PERIPH_T* hf_ssi_pin_config(ssi_handle_t *p_ssi_handle)
 /*
  * @brief   Initializes SSI.
  * @param   *p_ssi_handle : pointer to the SSI Handle structure (ssi_handle_t).
- * @retval  None.
+ * @retval  0: Success, -1: Fail
  */
 int8_t ssi_init(ssi_handle_t *p_ssi_handle)
 {
@@ -210,6 +230,108 @@ int8_t ssi_init(ssi_handle_t *p_ssi_handle)
     {
         return -1;
     }
+
+    /* @brief enable SSI clock */
+    hf_ssi_clock_enable(p_ssi);
+
+    /* @brief disable SSI peripheral prior configuration (safe programming) */
+    p_ssi_handle->p_ssi_x->CR1 &= ~(1 << 1);
+
+    /* @brief configure device mode */
+    switch(p_ssi_handle->ssi_periph.device_mode)
+    {
+
+    case SSI_CR1_MS_MASTER:
+        p_ssi_handle->p_ssi_x->CR1 &= ~(1 << 2);
+        break;
+
+    case SSI_CR1_MS_SLAVE:
+        p_ssi_handle->p_ssi_x->CR1 |= (1 << 2);
+        break;
+
+    default:
+        //p_ssi_handle->p_ssi_x->CR1 &= ~(1 << 2);
+        break;
+
+    }
+
+    /* @brief Set SSI Clock Source */
+    switch(p_ssi_handle->ssi_periph.clock_source)
+    {
+
+    case SSI_CC_CS_SYSCLK:
+        p_ssi_handle->p_ssi_x->CC &= ~(0x01UL);
+        break;
+
+    case SSI_CC_CS_PIOSC:
+        p_ssi_handle->p_ssi_x->CC |=  0x05UL;
+        break;
+
+    default:
+        break;
+
+    }
+
+    /* @brief Configure clock phase */
+    switch(p_ssi_handle->ssi_periph.clock_phase)
+    {
+
+    case SSI_CR0_SPH_FIRST:
+        p_ssi_handle->p_ssi_x->CR0 &= ~(1 << 7);
+        break;
+
+    case SSI_CR0_SPH_SECOND:
+        p_ssi_handle->p_ssi_x->CR0 |= (1 << 7);
+        break;
+
+    default:
+        break;
+
+    }
+
+
+    /* @brief Configure clock polarity */
+    switch(p_ssi_handle->ssi_periph.clock_polarity)
+    {
+
+    case SSI_CR0_SPO_LOW:
+        p_ssi_handle->p_ssi_x->CR0 &= ~(1 << 6);
+        break;
+
+    case SSI_CR0_SPO_HIGH:
+        p_ssi_handle->p_ssi_x->CR0 |= (1 << 6);
+        break;
+
+    default:
+        break;
+
+    }
+
+
+    /* @brief Configure frame format */
+    switch(p_ssi_handle->ssi_periph.frame_format)
+    {
+
+    case SSI_CR0_FRF_FREESCALE:
+        p_ssi_handle->p_ssi_x->CR0 &= ~(0x03UL << 4);
+        break;
+
+    case SSI_CR0_FRF_TI:
+        p_ssi_handle->p_ssi_x->CR0 |= (SSI_CR0_FRF_TI << 4);
+        break;
+
+    case SSI_CR0_FRF_MICROWIRE:
+        p_ssi_handle->p_ssi_x->CR0 |= (SSI_CR0_FRF_MICROWIRE << 4);
+        break;
+
+    default:
+        break;
+
+    }
+
+
+    /* @brief Configure Data Size */
+    p_ssi_handle->p_ssi_x->CR0 |= p_ssi_handle->ssi_periph.data_size;
 
 
     return 0;

@@ -129,8 +129,9 @@ typedef struct
     uint8_t clock_polarity;   /*!< SSI Clock Polarity Select            */
     uint8_t clock_speed;      /*!< SSI Clock Speed Select               */
     uint8_t frame_format;     /*!< SSI Frame Format Select              */
+    uint8_t data_size;        /*!< SSI Data Size Select                 */
 
-    GPIO_PORT_T *clock_port;  /*!< SSI Clock Pin Port initialize        */
+    GPIO_PORT_T *clock_port;  /*!< SSI Clock Pin Port initialize       */
 
 } ssi_config_t;
 
