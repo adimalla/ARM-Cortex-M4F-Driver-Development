@@ -186,6 +186,15 @@
 #define GPIO_MIS_FLAG            ((uint8_t)0x01UL)  /*!< GPIO Masked Interrupt Status Flag, Interrupt condition has occurred        */
 
 
+/*
+ * @brief GPIO Peripheral Enable Macros
+ */
+#define GPIOA_ENABLE             ((uint8_t)0x01UL)
+#define GPIOB_ENABLE             ((uint8_t)0x02UL)
+#define GPIOC_ENABLE             ((uint8_t)0x04UL)
+#define GPIOD_ENABLE             ((uint8_t)0x08UL)
+#define GPIOE_ENABLE             ((uint8_t)0x10UL)
+#define GPIOF_ENABLE             ((uint8_t)0x20UL)
 
 
 /******************************************************************************/
