@@ -55,29 +55,32 @@ static void hf_gpio_clock_enable(GPIO_PORT_T *p_gpio_x)
 
     /* @brief Enable Clock for GPIO ports with re initialization check  */
 
-    if(p_gpio_x == GPIOA && !(p_sys_clock->RCGCGPIO & 0x01UL))
+    if(p_gpio_x == GPIOA && !(p_sys_clock->RCGCGPIO & GPIOA_ENABLE))
     {
-        p_sys_clock->RCGCGPIO |= (0x01UL);
+        p_sys_clock->RCGCGPIO |= GPIOA_ENABLE;
+
+        /* @brief Check if GPIO Peripheral  is ready */
+        //while(p_sys_clock->PRSSI & SSI3_ENABLE);
     }
-    else if(p_gpio_x == GPIOB && !( p_sys_clock->RCGCGPIO & (1 << 1) ))
+    else if(p_gpio_x == GPIOB && !(p_sys_clock->RCGCGPIO & GPIOB_ENABLE) )
     {
-        p_sys_clock->RCGCGPIO |= (1 << 1);
+        p_sys_clock->RCGCGPIO |= GPIOB_ENABLE;
     }
-    else if(p_gpio_x == GPIOC && !( p_sys_clock->RCGCGPIO & (1 << 2) ))
+    else if( p_gpio_x == GPIOC && !(p_sys_clock->RCGCGPIO & GPIOC_ENABLE) )
     {
-        p_sys_clock->RCGCGPIO |= (1 << 2);
+        p_sys_clock->RCGCGPIO |= GPIOC_ENABLE;
     }
-    else if(p_gpio_x == GPIOD && !( p_sys_clock->RCGCGPIO & (1 << 3) ))
+    else if(p_gpio_x == GPIOD && !(p_sys_clock->RCGCGPIO & GPIOD_ENABLE) )
     {
-        p_sys_clock->RCGCGPIO |= (1 << 3);
+        p_sys_clock->RCGCGPIO |= GPIOD_ENABLE;
     }
-    else if(p_gpio_x == GPIOE && !( p_sys_clock->RCGCGPIO & (1 << 4) ))
+    else if(p_gpio_x == GPIOE && !(p_sys_clock->RCGCGPIO & GPIOE_ENABLE) )
     {
-        p_sys_clock->RCGCGPIO |= (1 << 4);
+        p_sys_clock->RCGCGPIO |= GPIOE_ENABLE;
     }
-    else if( (p_gpio_x == GPIOF) && !( p_sys_clock->RCGCGPIO & (1 << 5) ) )
+    else if( (p_gpio_x == GPIOF) && !(p_sys_clock->RCGCGPIO & GPIOF_ENABLE) )
     {
-        p_sys_clock->RCGCGPIO |= (1 << 5);
+        p_sys_clock->RCGCGPIO |= GPIOF_ENABLE;
     }
 
 }
