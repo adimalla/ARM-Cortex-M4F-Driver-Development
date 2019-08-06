@@ -55,7 +55,7 @@
 #define SSI_CR0_SPO_LOW            ((uint8_t)0x00UL)  /*!< Serial Clock Polarity (SPO), A steady state Low value is placed on the SSInClk pin  */
 #define SSI_CR0_SPO_HIGH           ((uint8_t)0x01UL)  /*!< Serial Clock Polarity (SPO), A steady state High value is placed on the SSInClk pin */
 #define SSI_CR0_FRF_FREESCALE      ((uint8_t)0x00UL)  /*!< SSI Frame Format Select (FRF), Freescale SPI Frame Format                           */
-#define SSI_CR0_FRF_TI             ((uint8_t)0x01UL)  /*!< SSI Frame Format Select (FRF), Texas Instruments Synchronous Serial Frame Format    */
+#define SSI_CR0_FRF_TEXAS          ((uint8_t)0x01UL)  /*!< SSI Frame Format Select (FRF), Texas Instruments Synchronous Serial Frame Format    */
 #define SSI_CR0_FRF_MICROWIRE      ((uint8_t)0x02UL)  /*!< SSI Frame Format Select (FRF), MICROWIRE Frame Format                               */
 #define SSI_CR0_DSS_4BIT           ((uint8_t)0x03UL)  /*!< SSI Data Size Select (DSS), 4-bit data                                              */
 #define SSI_CR0_DSS_5BIT           ((uint8_t)0x04UL)  /*!< SSI Data Size Select (DSS), 5-bit data                                              */
@@ -107,9 +107,16 @@
  * @brief SSI Clock Configuration (SSICC)
  */
 #define SSI_CC_CS_SYSCLK           ((uint8_t)0x00UL) /*!< SSI Baud Clock Source (CS), System clock                          */
-#define SSI_CC_CS_PIOSC            ((uint8_t)0x05UL) /*!< SSI Baud Clock Source (CS), precision internal oscillator (PIOSC) */
+#define SSI_CC_CS_PIOSC_CLK        ((uint8_t)0x05UL) /*!< SSI Baud Clock Source (CS), precision internal oscillator (PIOSC) */
 
 
+/*
+ * @brief SSI Peripheral Clock Enable Macros
+ */
+#define SSI0_ENABLE                ((uint8_t)0x01UL)
+#define SSI1_ENABLE                ((uint8_t)0x02UL)
+#define SSI2_ENABLE                ((uint8_t)0x04UL)
+#define SSI3_ENABLE                ((uint8_t)0x08UL)
 
 /******************************************************************************/
 /*                                                                            */
@@ -131,7 +138,7 @@ typedef struct
     uint8_t frame_format;     /*!< SSI Frame Format Select              */
     uint8_t data_size;        /*!< SSI Data Size Select                 */
 
-    GPIO_PORT_T *clock_port;  /*!< SSI Clock Pin Port initialize       */
+    GPIO_PORT_T *clock_port;  /*!< SSI Clock Pin Port initialize        */
 
 } ssi_config_t;
 
@@ -156,6 +163,11 @@ typedef struct
 /******************************************************************************/
 
 
+/*
+ * @brief   Initializes SSI.
+ * @param   *p_ssi_handle : pointer to the SSI Handle structure (ssi_handle_t).
+ * @retval  0: Success, -1: Fail
+ */
 int8_t ssi_init(ssi_handle_t *p_ssi_handle);
 
 
