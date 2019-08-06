@@ -46,7 +46,6 @@
 
 
 
-
 /*
  * @brief   helper function to enable SPI Peripheral Clock
  * @param   *p_ssi_x   : pointer to the SPI peripheral structure (SSI_PERIPH_T).
@@ -58,21 +57,33 @@ static void hf_ssi_clock_enable(SSI_PERIPH_T *p_ssi_x)
     SYSCTL_T *p_sys_clock = SYSCTL;  /*!< Pointer to System Control Peripheral Structure */
 
     /* @brief Enable Clock for SSI peripheral with re initialization check  */
-    if( (p_ssi_x == SSI0) && !(p_sys_clock->RCGCSSI & 0x01UL) )
+    if( (p_ssi_x == SSI0) && !(p_sys_clock->RCGCSSI & SSI0_ENABLE) )
     {
-        p_sys_clock->RCGCSSI |= (0x01UL);
+        p_sys_clock->RCGCSSI |= SSI0_ENABLE;
+
+        /* @brief check if SSI peripheral is ready */
+        while( !(p_sys_clock->PRSSI & SSI0_ENABLE) );
     }
-    else if( (p_ssi_x == SSI1) && !( p_sys_clock->RCGCSSI & (1 << 1) ) )
+    else if( (p_ssi_x == SSI1) && !(p_sys_clock->RCGCSSI & SSI1_ENABLE) )
     {
-        p_sys_clock->RCGCSSI |= (1 << 1);
+        p_sys_clock->RCGCSSI |= SSI1_ENABLE;
+
+        /* @brief check if SSI peripheral is ready */
+        while( !(p_sys_clock->PRSSI & SSI1_ENABLE) );
     }
-    else if( (p_ssi_x == SSI2) && !( p_sys_clock->RCGCSSI & (1 << 2) ) )
+    else if( (p_ssi_x == SSI2) && !(p_sys_clock->RCGCSSI & SSI2_ENABLE) )
     {
-        p_sys_clock->RCGCSSI |= (1 << 2);
+        p_sys_clock->RCGCSSI |= SSI2_ENABLE;
+
+        /* @brief check if SSI peripheral is ready */
+        while( !(p_sys_clock->PRSSI & SSI2_ENABLE) );
     }
-    else if( (p_ssi_x == SSI3) && !( p_sys_clock->RCGCSSI & (1 << 3) ) )
+    else if( (p_ssi_x == SSI3) && !( p_sys_clock->RCGCSSI & SSI3_ENABLE) )
     {
-        p_sys_clock->RCGCSSI |= (1 << 3);
+        p_sys_clock->RCGCSSI |= SSI3_ENABLE;
+
+        /* @brief check if SSI peripheral is ready */
+        while( !(p_sys_clock->PRSSI & SSI3_ENABLE) );
     }
 
 }
@@ -86,14 +97,14 @@ static void hf_ssi_clock_enable(SSI_PERIPH_T *p_ssi_x)
 static SSI_PERIPH_T* hf_ssi_pin_config(ssi_handle_t *p_ssi_handle)
 {
 
-    gpio_handle_t ssi_pins, ssi_clk, ssi_fss, ssi_tx, ssi_rx;
+    gpio_handle_t ssi_pins;
 
-    GPIO_PORT_T *ssi_clk_port = p_ssi_handle->ssi_periph.clock_port;
+    GPIO_PORT_T *ssi_pins_port = p_ssi_handle->ssi_periph.clock_port;
 
     ssi_pins.pin_config.pin_mode           = GPIO_DEN_ENABLE;
     ssi_pins.pin_config.alternate_function = GPIO_AFSEL_ENABLE;
 
-    if( ssi_clk_port == GPIOA )
+    if( ssi_pins_port == GPIOA )
     {
         if(p_ssi_handle->p_ssi_x != SSI0)
         {
@@ -105,45 +116,64 @@ static SSI_PERIPH_T* hf_ssi_pin_config(ssi_handle_t *p_ssi_handle)
         ssi_pins.pin_config.port_control = PCTL_AF2;
         gpio_init(&ssi_pins);
 
-        ssi_clk.pin_config.pin_number = 2;
-        gpio_init(&ssi_clk);
+        /* @brief SSI clock (clk) */
+        if(p_ssi_handle->ssi_periph.clock_polarity == SSI_CR0_SPO_HIGH)
+        {
+            ssi_pins.pin_config.pullupdown = GPIO_PUR_ENABLE;
+        }
+        ssi_pins.pin_config.pin_number = 2;
+        gpio_init(&ssi_pins);
 
-        ssi_fss.pin_config.pin_number = 3;
-        gpio_init(&ssi_fss);
+        /* @brief SSI Slave Select (fss) */
+        ssi_pins.pin_config.pin_number = 3;
+        ssi_pins.pin_config.pullupdown = GPIO_PUR_ENABLE;
+        gpio_init(&ssi_pins);
 
-        ssi_fss.pin_config.pin_number = 4;
-        gpio_init(&ssi_rx);
+        /* @brief SSI Receive MISO (rx) */
+        ssi_pins.pin_config.pin_number = 4;
+        gpio_init(&ssi_pins);
 
-        ssi_fss.pin_config.pin_number = 5;
-        gpio_init(&ssi_tx);
+        /* @brief SSI Receive MOSI (tx) */
+        ssi_pins.pin_config.pin_number = 5;
+        gpio_init(&ssi_pins);
 
         return SSI0;
     }
-    else if( ssi_clk_port == GPIOD )
+    else if( ssi_pins_port == GPIOD )
     {
-        if(p_ssi_handle->p_ssi_x != SSI1 || p_ssi_handle->p_ssi_x != SSI3 )
+        if(p_ssi_handle->p_ssi_x == SSI1 || p_ssi_handle->p_ssi_x == SSI3 )
+        {
+
+            /* @brief Select SSI1 or SSI3 pin pack */
+            ssi_pins.p_gpio_x                = GPIOD;
+            ssi_pins.pin_config.port_control = PCTL_AF2;
+            gpio_init(&ssi_pins);
+
+            /* @brief SSI clock (clk) */
+            if(p_ssi_handle->ssi_periph.clock_polarity == SSI_CR0_SPO_HIGH)
+            {
+                ssi_pins.pin_config.pullupdown = GPIO_PUR_ENABLE;
+            }
+            ssi_pins.pin_config.pin_number = 0;
+            gpio_init(&ssi_pins);
+
+            /* @brief SSI Slave Select (fss) */
+            ssi_pins.pin_config.pin_number = 1;
+            ssi_pins.pin_config.pullupdown = GPIO_PUR_ENABLE;
+            gpio_init(&ssi_pins);
+
+            /* @brief SSI Receive MISO (rx) */
+            ssi_pins.pin_config.pin_number = 2;
+            gpio_init(&ssi_pins);
+
+            /* @brief SSI Receive MOSI (tx) */
+            ssi_pins.pin_config.pin_number = 3;
+            gpio_init(&ssi_pins);
+        }
+        else
         {
             return (SSI_PERIPH_T *)0;
         }
-
-        /* @brief Select SSI1 or SSI3 pin pack */
-
-        ssi_pins.p_gpio_x                = GPIOD;
-        ssi_pins.pin_config.port_control = PCTL_AF2;
-        gpio_init(&ssi_pins);
-
-        ssi_clk.pin_config.pin_number = 0;
-        gpio_init(&ssi_clk);
-
-        ssi_fss.pin_config.pin_number = 1;
-        gpio_init(&ssi_fss);
-
-        ssi_fss.pin_config.pin_number = 2;
-        gpio_init(&ssi_rx);
-
-        ssi_fss.pin_config.pin_number = 3;
-        gpio_init(&ssi_tx);
-
         if(p_ssi_handle->p_ssi_x == SSI1)
         {
             return SSI1;
@@ -155,7 +185,7 @@ static SSI_PERIPH_T* hf_ssi_pin_config(ssi_handle_t *p_ssi_handle)
         }
 
     }
-    else if( ssi_clk_port == GPIOF )
+    else if( ssi_pins_port == GPIOF )
     {
         if(p_ssi_handle->p_ssi_x != SSI1)
         {
@@ -167,21 +197,30 @@ static SSI_PERIPH_T* hf_ssi_pin_config(ssi_handle_t *p_ssi_handle)
         ssi_pins.pin_config.port_control = PCTL_AF2;
         gpio_init(&ssi_pins);
 
-        ssi_clk.pin_config.pin_number = 2;
-        gpio_init(&ssi_clk);
+        /* @brief SSI clock (clk) */
+        if(p_ssi_handle->ssi_periph.clock_polarity == SSI_CR0_SPO_HIGH)
+        {
+            ssi_pins.pin_config.pullupdown = GPIO_PUR_ENABLE;
+        }
+        ssi_pins.pin_config.pin_number = 2;
+        gpio_init(&ssi_pins);
 
-        ssi_fss.pin_config.pin_number = 3;
-        gpio_init(&ssi_fss);
+        /* @brief SSI Slave Select (fss) */
+        ssi_pins.pin_config.pin_number = 3;
+        ssi_pins.pin_config.pullupdown = GPIO_PUR_ENABLE;
+        gpio_init(&ssi_pins);
 
-        ssi_fss.pin_config.pin_number = 0;
-        gpio_init(&ssi_rx);
+        /* @brief SSI Receive MISO (rx) */
+        ssi_pins.pin_config.pin_number = 0;
+        gpio_init(&ssi_pins);
 
-        ssi_fss.pin_config.pin_number = 1;
-        gpio_init(&ssi_tx);
+        /* @brief SSI Receive MOSI (tx) */
+        ssi_pins.pin_config.pin_number = 1;
+        gpio_init(&ssi_pins);
 
         return SSI1;
     }
-    else if( ssi_clk_port == GPIOB )
+    else if( ssi_pins_port == GPIOB )
     {
         if(p_ssi_handle->p_ssi_x != SSI2)
         {
@@ -193,17 +232,26 @@ static SSI_PERIPH_T* hf_ssi_pin_config(ssi_handle_t *p_ssi_handle)
         ssi_pins.pin_config.port_control = PCTL_AF2;
         gpio_init(&ssi_pins);
 
-        ssi_clk.pin_config.pin_number = 4;
-        gpio_init(&ssi_clk);
+        /* @brief SSI clock (clk) */
+        if(p_ssi_handle->ssi_periph.clock_polarity == SSI_CR0_SPO_HIGH)
+        {
+            ssi_pins.pin_config.pullupdown = GPIO_PUR_ENABLE;
+        }
+        ssi_pins.pin_config.pin_number = 4;
+        gpio_init(&ssi_pins);
 
-        ssi_fss.pin_config.pin_number = 5;
-        gpio_init(&ssi_fss);
+        /* @brief SSI Slave Select (fss) */
+        ssi_pins.pin_config.pin_number = 5;
+        ssi_pins.pin_config.pullupdown = GPIO_PUR_ENABLE;
+        gpio_init(&ssi_pins);
 
-        ssi_fss.pin_config.pin_number = 6;
-        gpio_init(&ssi_rx);
+        /* @brief SSI Receive MISO (rx) */
+        ssi_pins.pin_config.pin_number = 6;
+        gpio_init(&ssi_pins);
 
-        ssi_fss.pin_config.pin_number = 7;
-        gpio_init(&ssi_tx);
+        /* @brief SSI Receive MOSI (tx) */
+        ssi_pins.pin_config.pin_number = 7;
+        gpio_init(&ssi_pins);
 
         return SSI2;
     }
@@ -234,6 +282,7 @@ int8_t ssi_init(ssi_handle_t *p_ssi_handle)
     /* @brief enable SSI clock */
     hf_ssi_clock_enable(p_ssi);
 
+
     /* @brief disable SSI peripheral prior configuration (safe programming) */
     p_ssi_handle->p_ssi_x->CR1 &= ~(1 << 1);
 
@@ -260,10 +309,10 @@ int8_t ssi_init(ssi_handle_t *p_ssi_handle)
     {
 
     case SSI_CC_CS_SYSCLK:
-        p_ssi_handle->p_ssi_x->CC &= ~(0x01UL);
+        p_ssi_handle->p_ssi_x->CC &= ~(0x00UL);
         break;
 
-    case SSI_CC_CS_PIOSC:
+    case SSI_CC_CS_PIOSC_CLK:
         p_ssi_handle->p_ssi_x->CC |=  0x05UL;
         break;
 
@@ -316,8 +365,8 @@ int8_t ssi_init(ssi_handle_t *p_ssi_handle)
         p_ssi_handle->p_ssi_x->CR0 &= ~(0x03UL << 4);
         break;
 
-    case SSI_CR0_FRF_TI:
-        p_ssi_handle->p_ssi_x->CR0 |= (SSI_CR0_FRF_TI << 4);
+    case SSI_CR0_FRF_TEXAS:
+        p_ssi_handle->p_ssi_x->CR0 |= (SSI_CR0_FRF_TEXAS << 4);
         break;
 
     case SSI_CR0_FRF_MICROWIRE:
@@ -329,9 +378,15 @@ int8_t ssi_init(ssi_handle_t *p_ssi_handle)
 
     }
 
+    /* @brief Set clock speed */
+    p_ssi_handle->p_ssi_x->CPSR = p_ssi_handle->ssi_periph.clock_speed;
 
     /* @brief Configure Data Size */
     p_ssi_handle->p_ssi_x->CR0 |= p_ssi_handle->ssi_periph.data_size;
+
+
+    /* @brief Enable SSI peripheral  */
+    p_ssi_handle->p_ssi_x->CR1 |= (1 << 1);
 
 
     return 0;
