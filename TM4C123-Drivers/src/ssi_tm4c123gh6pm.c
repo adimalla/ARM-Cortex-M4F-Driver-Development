@@ -263,9 +263,9 @@ static SSI_PERIPH_T* hf_ssi_pin_config(ssi_handle_t *p_ssi_handle)
 
 
 /*
- * @brief   Initializes SSI.
- * @param   *p_ssi_handle : pointer to the SSI Handle structure (ssi_handle_t).
- * @retval  0: Success, -1: Fail
+ * @brief  Initializes SSI.
+ * @param  *p_ssi_handle : pointer to the SSI Handle structure (ssi_handle_t).
+ * @retval 0: Success, -1: Fail
  */
 int8_t ssi_init(ssi_handle_t *p_ssi_handle)
 {
@@ -394,6 +394,76 @@ int8_t ssi_init(ssi_handle_t *p_ssi_handle)
 
 
 
+/*
+ * @brief Send Data Through MISO (Tx)
+ * @param *p_ssi_x : pointer to the SSI peripheral structure.
+ * @param ssi_data : data to be send
+ */
+void ssi_put_data(SSI_PERIPH_T *p_ssi_x, uint16_t ssi_data)
+{
+    /* @brief Hold till Transmit FIFO is not empty */
+    while((p_ssi_x->SR & SSI_SR_TFE_EMPTY_FLAG) == 0){};
+
+    if( (p_ssi_x->CR0 & 0x0F) > SSI_CR0_DSS_8BIT )
+    {
+        p_ssi_x->DR = ssi_data;
+    }
+    else
+    {
+        p_ssi_x->DR = (uint8_t)ssi_data;
+    }
+
+}
+
+
+
+/*
+ * @brief Receive Through MISO (rx)
+ * @param *p_ssi_x : pointer to the SSI peripheral structure.
+ * @param ssi_data : data to be send
+ */
+uint16_t ssi_get_data(SSI_PERIPH_T *p_ssi_x)
+{
+    uint16_t data = 0;
+
+    /* @brief Hold till Receive FIFO is Empty */
+    while( (p_ssi_x->SR & SSI_SR_RNE_NOT_EMPTY_FLAG) == 0 ) {};
+
+    data = p_ssi_x->DR;
+
+    if( (p_ssi_x->CR0 & 0x0F) > SSI_CR0_DSS_8BIT )
+    {
+        return data;
+    }
+    else
+    {
+        return (uint8_t)data;
+    }
+
+    return 0;
+}
+
+
+
+/*
+ * @brief Send Data Through MISO (Tx)
+ * @param *p_ssi_x    : pointer to the SSI peripheral structure.
+ * @param *p_txbuffer :
+ * @param data_length : data to be send
+ */
+void ssi_send_stream(SSI_PERIPH_T *p_ssi_x, uint16_t *p_txbuffer, uint32_t data_length)
+{
+    uint32_t ssi_data_count;
+
+    while(data_length)
+    {
+        ssi_put_data(p_ssi_x, p_txbuffer[ssi_data_count]);
+
+        ssi_data_count++;
+        data_length--;
+    }
+
+}
 
 
 

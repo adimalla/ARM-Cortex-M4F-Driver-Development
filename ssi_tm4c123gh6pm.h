@@ -179,12 +179,7 @@ int8_t ssi_init(ssi_handle_t *p_ssi_handle);
 void ssi_put_data(SSI_PERIPH_T *p_ssi_x, uint16_t ssi_data);
 
 
-/*
- * @brief Send Data Through MISO (Tx)
- * @param *p_ssi_x    : pointer to the SSI peripheral structure.
- * @param *p_txbuffer :
- * @param data_length : data to be send
- */
+
 void ssi_send_stream(SSI_PERIPH_T *p_ssi_x, uint16_t *p_txbuffer, uint32_t data_length);
 
 
@@ -193,7 +188,7 @@ void ssi_send_stream(SSI_PERIPH_T *p_ssi_x, uint16_t *p_txbuffer, uint32_t data_
  * @param *p_ssi_x : pointer to the SSI peripheral structure.
  * @param ssi_data : data to be send
  */
-uint16_t ssi_get_data(SSI_PERIPH_T *p_ssi_x);
+uint16_t ssi_get_char(SSI_PERIPH_T *p_ssi_x);
 
 uint8_t ssi_receive_data(ssi_handle_t *p_ssi_handle, uint16_t *p_rxbuffer, uint32_t len);
 
